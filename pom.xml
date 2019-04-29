@@ -5,27 +5,17 @@
   <version>1.00</version>
   <build>
     <resources>
-      <resource>
-        <directory>src/main/resources</directory>
-        <filtering>true</filtering>
-        <includes>
-          <include>**/plugin.yml</include>
-        </includes>
-      </resource>
-      <resource>
-        <directory>src/main/resources</directory>
-        <filtering>false</filtering>
-        <excludes>
-          <exclude>**/plugin.yml</exclude>
-        </excludes>
-      </resource>
-      <resource>
-        <directory>src/main/resources</directory>
-        <filtering>true</filtering>
-        <includes>
-          <include>**/config.yml</include>
-        </includes>
-      </resource>
+       <resource>
+         <targetPath>.</targetPath>
+         <filtering>true</filtering>
+         <directory>${basedir}/src/main/resources/</directory>
+         <includes>
+             <include>*.yml</include>
+         </includes>
+         <excludes>
+            <exclude>**/plugin.yml</exclude>
+         </excludes>
+       </resource>
     </resources>
     <plugins>
       <plugin>
