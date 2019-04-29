@@ -55,7 +55,7 @@ public final class ViaVersionStatus extends JavaPlugin implements Listener {
 
 		for (Player p : Bukkit.getServer().getOnlinePlayers()) {
 			if (p.hasPermission("viaversionstatus.notify")) {
-				p.sendMessage(message.replace("{user}", player.getName()).replace("{client_version}", version + ""));
+				p.sendMessage(message.replace("{user}", player.getName()).replace("{client_version}", key.toString() + ""));
 			}
 		}
 

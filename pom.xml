@@ -12,9 +12,6 @@
          <includes>
              <include>*.yml</include>
          </includes>
-         <excludes>
-            <exclude>**/plugin.yml</exclude>
-         </excludes>
        </resource>
     </resources>
     <plugins>
