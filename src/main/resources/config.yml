@@ -1,4 +1,4 @@
-# Strings should be enclosed in doublt quotes: "..."
+# Strings should be enclosed in double quotes: "..."
 # Supported variables are %player%, %version%, and %server%
 # \n can be used as a line break
 
