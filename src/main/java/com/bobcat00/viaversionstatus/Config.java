@@ -16,26 +16,34 @@
 
 package com.bobcat00.viaversionstatus;
 
-import org.bukkit.event.Listener;
-import org.bukkit.plugin.java.JavaPlugin;
-
-public final class ViaVersionStatus extends JavaPlugin
+public class Config
 {
-    Config config;
-    Listener listeners;
-
-    @Override
-    public void onEnable()
+    private ViaVersionStatus plugin;
+    
+    // Constructor
+    
+    public Config(ViaVersionStatus plugin)
     {
-        config = new Config(this);
-        saveDefaultConfig();
-        
-        listeners = new Listeners(this);
+        this.plugin = plugin;
     }
- 
-    @Override
-    public void onDisable()
+    
+    // Get the string to be sent to ops
+    
+    public String getNotifyString()
     {
+        return plugin.getConfig().getString("notify-string");
     }
-
+    
+    // Warning for players with mismatched version
+    
+    public boolean getWarnPlayers()
+    {
+        return plugin.getConfig().getBoolean("warn-players");
+    }
+    
+    public String getWarnString()
+    {
+        return plugin.getConfig().getString("warn-string");
+    }
+    
 }
