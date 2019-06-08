@@ -16,6 +16,7 @@
 
 package com.bobcat00.viaversionstatus;
 
+import org.bstats.bukkit.Metrics;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -31,6 +32,11 @@ public final class ViaVersionStatus extends JavaPlugin
         saveDefaultConfig();
         
         listeners = new Listeners(this);
+        
+        // Metrics
+        Metrics metrics = new Metrics(this);
+        metrics.addCustomChart(new Metrics.SimplePie("warn_players", () -> config.getWarnPlayers() ? "Yes" : "No"));
+        getLogger().info("Enabled metrics. You may opt-out by changing plugins/bStats/config.yml");
     }
  
     @Override
