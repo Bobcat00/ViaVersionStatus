@@ -35,8 +35,11 @@ public final class ViaVersionStatus extends JavaPlugin
         
         // Metrics
         Metrics metrics = new Metrics(this);
-        metrics.addCustomChart(new Metrics.SimplePie("warn_players", () -> config.getWarnPlayers() ? "Yes" : "No"));
-        getLogger().info("Enabled metrics. You may opt-out by changing plugins/bStats/config.yml");
+        if (metrics.isEnabled())
+        {
+            metrics.addCustomChart(new Metrics.SimplePie("warn_players", () -> config.getWarnPlayers() ? "Yes" : "No"));
+            getLogger().info("Enabled metrics. You may opt-out by changing plugins/bStats/config.yml");
+        }
     }
  
     @Override
