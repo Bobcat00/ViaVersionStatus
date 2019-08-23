@@ -4,6 +4,7 @@ version: ${project.version}
 author: Bobcat00
 api-version: 1.13
 depend: [ViaVersion]
+softdepend: [ProtocolSupport]
 permissions:
   viaversionstatus.notify:
     description: Display other player client version at join

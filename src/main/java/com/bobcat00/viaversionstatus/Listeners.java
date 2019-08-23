@@ -23,16 +23,15 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-import us.myles.ViaVersion.api.Via;
-import us.myles.ViaVersion.api.ViaAPI;
-import us.myles.ViaVersion.api.protocol.ProtocolRegistry;
-import us.myles.ViaVersion.api.protocol.ProtocolVersion;
+import com.bobcat00.viaversionstatus.connections.ProtocolVersion;
+import com.bobcat00.viaversionstatus.connections.ViaConnection;
+
+//import protocolsupport.api.ProtocolSupportAPI;
 
 public final class Listeners implements Listener
 {
     private ViaVersionStatus plugin;
-    @SuppressWarnings("rawtypes")
-    private ViaAPI api;
+    private ViaConnection via;
     
     // Constructor
     
@@ -40,7 +39,7 @@ public final class Listeners implements Listener
     {
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
-        api = Via.getAPI();
+        via = new ViaConnection();
     }
     
     // Player join event
@@ -51,12 +50,14 @@ public final class Listeners implements Listener
         final Player player = e.getPlayer();
         
         // Protocol consists of a Name and Id (toString returns both as a combined string)
-        @SuppressWarnings("unchecked")
-        final ProtocolVersion clientProtocol = ProtocolVersion.getProtocol(api.getPlayerVersion(player));
+        final ProtocolVersion clientProtocol = via.getProtocol(player);
         final String clientVersion = clientProtocol.getName();
 
-        final ProtocolVersion serverProtocol = ProtocolVersion.getProtocol(ProtocolRegistry.SERVER_PROTOCOL);
+        final ProtocolVersion serverProtocol = via.getServerProtocol();
         final String serverVersion = serverProtocol.getName(); // may be UNKNOWN
+        
+        // ProtocolSupport
+        //final protocolsupport.api.ProtocolVersion.ProtocolVersion ProtocolSupportAPI.getProtocolVersion(player);
         
         // 1. Write to log file
         
