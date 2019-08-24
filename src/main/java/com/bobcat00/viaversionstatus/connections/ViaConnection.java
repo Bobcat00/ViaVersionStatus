@@ -31,7 +31,7 @@ public class ViaConnection implements Connection
     
     public ViaConnection()
     {
-        api = Via.getAPI();
+        api = Via.getAPI(); // This is OK for now because ViaVersion is required in plugin.yml
     }
     
     // isValid
@@ -48,8 +48,11 @@ public class ViaConnection implements Connection
     {
         ProtocolVersion protocol = new ProtocolVersion();
         
-        protocol.id = api.getPlayerVersion(player);
-        protocol.name = us.myles.ViaVersion.api.protocol.ProtocolVersion.getProtocol(protocol.id).getName();
+        if (api != null)
+        {
+            protocol.id = api.getPlayerVersion(player);
+            protocol.name = us.myles.ViaVersion.api.protocol.ProtocolVersion.getProtocol(protocol.id).getName();
+        }
         
         return protocol;
     }

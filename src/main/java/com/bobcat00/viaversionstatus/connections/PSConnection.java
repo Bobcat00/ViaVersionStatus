@@ -16,21 +16,39 @@
 
 package com.bobcat00.viaversionstatus.connections;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-class PSConnection implements Connection
+import protocolsupport.api.ProtocolSupportAPI;
+
+public class PSConnection implements Connection
 {
+    private boolean valid;
+    
+    // Constructor
+    
+    public PSConnection()
+    {
+        valid = Bukkit.getPluginManager().isPluginEnabled("ProtocolSupport");
+    }
+    
+    // isValid
+    
     public boolean isValid()
     {
-        return false;
+        return valid;
     }
+    
+    // ProtocolVersion
     
     public ProtocolVersion getProtocol(Player player)
     {
         ProtocolVersion protocol = new ProtocolVersion();
         
-        protocol.id = 0;
-        protocol.name = "UNKNOWN";
+        protocolsupport.api.ProtocolVersion psProtocol = ProtocolSupportAPI.getProtocolVersion(player);
+        
+        protocol.id = psProtocol.getId();
+        protocol.name = psProtocol.getName();
         
         return protocol;
     }

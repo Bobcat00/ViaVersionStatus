@@ -24,14 +24,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import com.bobcat00.viaversionstatus.connections.ProtocolVersion;
+import com.bobcat00.viaversionstatus.connections.PSConnection;
 import com.bobcat00.viaversionstatus.connections.ViaConnection;
-
-//import protocolsupport.api.ProtocolSupportAPI;
 
 public final class Listeners implements Listener
 {
     private ViaVersionStatus plugin;
     private ViaConnection via;
+    private PSConnection ps;
     
     // Constructor
     
@@ -40,6 +40,7 @@ public final class Listeners implements Listener
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
         via = new ViaConnection();
+        ps = new PSConnection();
     }
     
     // Player join event
@@ -55,9 +56,6 @@ public final class Listeners implements Listener
 
         final ProtocolVersion serverProtocol = via.getServerProtocol();
         final String serverVersion = serverProtocol.getName(); // may be UNKNOWN
-        
-        // ProtocolSupport
-        //final protocolsupport.api.ProtocolVersion.ProtocolVersion ProtocolSupportAPI.getProtocolVersion(player);
         
         // 1. Write to log file
         
