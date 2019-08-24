@@ -30,6 +30,7 @@ import com.bobcat00.viaversionstatus.connections.ViaConnection;
 public final class Listeners implements Listener
 {
     private ViaVersionStatus plugin;
+    
     private ViaConnection via;
     private PSConnection ps;
     
@@ -39,8 +40,10 @@ public final class Listeners implements Listener
     {
         this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
+        
         via = new ViaConnection();
         ps = new PSConnection();
+        
     }
     
     // Player join event
@@ -50,12 +53,37 @@ public final class Listeners implements Listener
     {
         final Player player = e.getPlayer();
         
+        final ProtocolVersion serverProtocol = via.getServerProtocol(); // Get server info from ViaVersion
+        final String serverVersion = serverProtocol.getName(); // May be UNKNOWN
+        
+//        // ***** DEBUG *****
+//        plugin.getLogger().info("serverProtocol = " + serverProtocol.toString());
+//        plugin.getLogger().info("viaProtocol    = " + via.getProtocol(player).toString());
+//        if (ps.isValid())
+//        {
+//            plugin.getLogger().info("psProtocol     = " + ps.getProtocol(player).toString());
+//        }
+//        else
+//        {
+//            plugin.getLogger().info("psProtocol     = not valid");
+//        }
+//        // ***** DEBUG *****
+        
         // Protocol consists of a Name and Id (toString returns both as a combined string)
-        final ProtocolVersion clientProtocol = via.getProtocol(player);
-        final String clientVersion = clientProtocol.getName();
-
-        final ProtocolVersion serverProtocol = via.getServerProtocol();
-        final String serverVersion = serverProtocol.getName(); // may be UNKNOWN
+        ProtocolVersion clientProtocol;
+        
+        // If PS is valid and PS ID < server ID, use PS; else use Via
+        if (ps.isValid() && (ps.getProtocol(player).getId() < serverProtocol.getId()))
+        {
+            // Use PS
+            clientProtocol = ps.getProtocol(player);
+        }
+        else
+        {
+            // Use Via
+            clientProtocol = via.getProtocol(player);
+        }
+        String clientVersion = clientProtocol.getName();
         
         // 1. Write to log file
         
@@ -94,7 +122,7 @@ public final class Listeners implements Listener
                                                           replace("%server%",  serverVersion)));
                     }
                 }
-            }, 5L);
+            }, 5L); // time delay (ticks)
         }
 
     }

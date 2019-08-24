@@ -25,7 +25,7 @@ public class ProtocolVersion
     
     ProtocolVersion()
     {
-        id = 0;
+        id = -1;
         name = "UNKNOWN";
     }
     
