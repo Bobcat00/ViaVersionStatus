@@ -34,6 +34,15 @@ public final class Listeners implements Listener
     private ViaConnection via;
     private PSConnection ps;
     
+    private enum UseConnection
+    {
+        USE_VIA,
+        USE_PS,
+        USE_BOTH
+    }
+    
+    private UseConnection useConnection;
+    
     // Constructor
     
     public Listeners(ViaVersionStatus plugin)
@@ -44,6 +53,27 @@ public final class Listeners implements Listener
         via = new ViaConnection();
         ps = new PSConnection();
         
+        if (via.isValid() && ps.isValid())
+        {
+            useConnection = UseConnection.USE_BOTH;
+            plugin.getLogger().info("Using both ViaVersion and ProtocolSupport to determine versions.");
+        }
+        else if (via.isValid())
+        {
+            useConnection = UseConnection.USE_VIA;
+            plugin.getLogger().info("Using ViaVersion to determine versions.");
+        }
+        else if (ps.isValid())
+        {
+            useConnection = UseConnection.USE_PS;
+            plugin.getLogger().info("Using ProtocolSupport to determine versions.");
+        }
+        else
+        {
+            plugin.getLogger().severe("This plugin requires either ViaVersion or ProtocolSupport or both.");
+            plugin.shutdown();
+            throw new RuntimeException("ViaVersion or ProtocolSupport required"); // Get the user's attention
+        }
     }
     
     // Player join event
@@ -53,37 +83,56 @@ public final class Listeners implements Listener
     {
         final Player player = e.getPlayer();
         
-        final ProtocolVersion serverProtocol = via.getServerProtocol(); // Get server info from ViaVersion
-        final String serverVersion = serverProtocol.getName(); // May be UNKNOWN
+        // Protocol consists of a Name and Id (toString returns both as a combined string)
+        ProtocolVersion serverProtocol = null;
+        ProtocolVersion clientProtocol = null;
+        
+        switch (useConnection)
+        {
+        case USE_VIA:
+            serverProtocol = via.getServerProtocol();
+            clientProtocol = via.getProtocol(player);
+            break;
+            
+        case USE_PS:
+            serverProtocol = ps.getServerProtocol();
+            clientProtocol = ps.getProtocol(player);
+            break;
+            
+        case USE_BOTH:
+            serverProtocol = via.getServerProtocol(); // Get server info from ViaVersion
+
+            // If PS ID < server ID, use PS; else use Via
+            if (ps.getProtocol(player).getId() < serverProtocol.getId())
+            {
+                // Use PS
+                clientProtocol = ps.getProtocol(player);
+            }
+            else
+            {
+                // Use Via
+                clientProtocol = via.getProtocol(player);
+            }
+            break;
+        }
+        
+        final String clientVersion = clientProtocol.getName();
+        final String serverVersion = serverProtocol.getName();
         
 //        // ***** DEBUG *****
 //        plugin.getLogger().info("serverProtocol = " + serverProtocol.toString());
-//        plugin.getLogger().info("viaProtocol    = " + via.getProtocol(player).toString());
-//        if (ps.isValid())
-//        {
-//            plugin.getLogger().info("psProtocol     = " + ps.getProtocol(player).toString());
-//        }
+//        plugin.getLogger().info("clientProtocol = " + clientProtocol.toString());
+//
+//        if (via.isValid())
+//            plugin.getLogger().info("viaProtocol    = " + via.getProtocol(player).toString());
 //        else
-//        {
+//            plugin.getLogger().info("viaProtocol    = not valid");
+//
+//        if (ps.isValid())
+//            plugin.getLogger().info("psProtocol     = " + ps.getProtocol(player).toString());
+//        else
 //            plugin.getLogger().info("psProtocol     = not valid");
-//        }
 //        // ***** DEBUG *****
-        
-        // Protocol consists of a Name and Id (toString returns both as a combined string)
-        ProtocolVersion clientProtocol;
-        
-        // If PS is valid and PS ID < server ID, use PS; else use Via
-        if (ps.isValid() && (ps.getProtocol(player).getId() < serverProtocol.getId()))
-        {
-            // Use PS
-            clientProtocol = ps.getProtocol(player);
-        }
-        else
-        {
-            // Use Via
-            clientProtocol = via.getProtocol(player);
-        }
-        String clientVersion = clientProtocol.getName();
         
         // 1. Write to log file
         

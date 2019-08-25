@@ -46,5 +46,10 @@ public final class ViaVersionStatus extends JavaPlugin
     public void onDisable()
     {
     }
+    
+    public void shutdown()
+    {
+        setEnabled(false);
+    }
 
 }

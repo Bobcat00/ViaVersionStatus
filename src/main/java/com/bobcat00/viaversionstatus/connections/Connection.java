@@ -23,4 +23,6 @@ public interface Connection
     boolean isValid();
     
     ProtocolVersion getProtocol(Player player);
+    
+    ProtocolVersion getServerProtocol();
 }

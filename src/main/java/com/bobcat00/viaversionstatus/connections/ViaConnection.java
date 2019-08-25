@@ -16,6 +16,7 @@
 
 package com.bobcat00.viaversionstatus.connections;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import us.myles.ViaVersion.api.Via;
@@ -24,6 +25,7 @@ import us.myles.ViaVersion.api.protocol.ProtocolRegistry;
 
 public class ViaConnection implements Connection
 {
+    private boolean valid;
     @SuppressWarnings("rawtypes")
     private ViaAPI api;
     
@@ -31,14 +33,18 @@ public class ViaConnection implements Connection
     
     public ViaConnection()
     {
-        api = Via.getAPI(); // This is OK for now because ViaVersion is required in plugin.yml
+        valid = Bukkit.getPluginManager().isPluginEnabled("ViaVersion");
+        if (valid)
+        {
+            api = Via.getAPI();
+        }
     }
     
     // isValid
     
     public boolean isValid()
     {
-        return api != null;
+        return valid;
     }
     
     // getProtocol

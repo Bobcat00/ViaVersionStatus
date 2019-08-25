@@ -20,6 +20,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import protocolsupport.api.ProtocolSupportAPI;
+import protocolsupport.protocol.utils.ProtocolVersionsHelper;
 
 public class PSConnection implements Connection
 {
@@ -49,6 +50,19 @@ public class PSConnection implements Connection
         
         protocol.id = psProtocol.getId();
         protocol.name = psProtocol.getName();
+        
+        return protocol;
+    }
+    
+    // getServerProtocol
+    
+    public ProtocolVersion getServerProtocol()
+    {
+        ProtocolVersion protocol = new ProtocolVersion();
+
+        // Server version is always the latest version supported
+        protocol.id = ProtocolVersionsHelper.LATEST_PC.getId();
+        protocol.name = ProtocolVersionsHelper.LATEST_PC.getName();
         
         return protocol;
     }
