@@ -38,10 +38,11 @@ public final class Listeners implements Listener
     {
         USE_VIA,
         USE_PS,
-        USE_BOTH
+        USE_BOTH,
+        USE_NONE
     }
     
-    private UseConnection useConnection;
+    private UseConnection useConnection = UseConnection.USE_NONE;
     
     // Constructor
     
@@ -114,6 +115,14 @@ public final class Listeners implements Listener
                 clientProtocol = via.getProtocol(player);
             }
             break;
+            
+        case USE_NONE:
+            // Should never get here
+            return;
+            
+        default:
+            // Should never get here
+            return;
         }
         
         final String clientVersion = clientProtocol.getName();
