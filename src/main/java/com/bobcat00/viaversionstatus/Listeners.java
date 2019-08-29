@@ -73,7 +73,7 @@ public final class Listeners implements Listener
         {
             plugin.getLogger().severe("This plugin requires either ViaVersion or ProtocolSupport or both.");
             plugin.shutdown();
-            throw new RuntimeException("ViaVersion or ProtocolSupport required"); // Get the user's attention
+            throw new RuntimeException("ViaVersion or ProtocolSupport required."); // Get the user's attention
         }
     }
     
