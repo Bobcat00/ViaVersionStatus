@@ -34,7 +34,7 @@ public final class Listeners implements Listener
     private ViaConnection via;
     private PSConnection ps;
     
-    private enum UseConnection
+    public enum UseConnection
     {
         USE_VIA,
         USE_PS,
@@ -75,6 +75,13 @@ public final class Listeners implements Listener
             plugin.shutdown();
             throw new RuntimeException("ViaVersion or ProtocolSupport required."); // Get the user's attention
         }
+    }
+    
+    // Get connection used
+    
+    public UseConnection getConnectionUsed()
+    {
+        return useConnection;
     }
     
     // Player join event
