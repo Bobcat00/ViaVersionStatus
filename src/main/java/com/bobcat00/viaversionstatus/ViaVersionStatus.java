@@ -39,12 +39,13 @@ public final class ViaVersionStatus extends JavaPlugin
         Metrics metrics = new Metrics(this);
         if (metrics.isEnabled())
         {
-            metrics.addCustomChart(new Metrics.SimplePie("connection_used", () -> listeners.getConnectionUsed().toString()));
-            metrics.addCustomChart(new Metrics.SimplePie("warn_players",    () -> config.getWarnPlayers()                                      ? "Yes" : "No"));
-            metrics.addCustomChart(new Metrics.SimplePie("viaversion",      () -> Bukkit.getPluginManager().isPluginEnabled("ViaVersion")      ? "Yes" : "No"));
-            metrics.addCustomChart(new Metrics.SimplePie("viabackwards",    () -> Bukkit.getPluginManager().isPluginEnabled("ViaBackwards")    ? "Yes" : "No"));
-            metrics.addCustomChart(new Metrics.SimplePie("viarewind",       () -> Bukkit.getPluginManager().isPluginEnabled("ViaRewind")       ? "Yes" : "No"));
-            metrics.addCustomChart(new Metrics.SimplePie("protocolsupport", () -> Bukkit.getPluginManager().isPluginEnabled("ProtocolSupport") ? "Yes" : "No"));
+            metrics.addCustomChart(new Metrics.SimplePie("connection_used",   () -> listeners.getConnectionUsed().toString()));
+            metrics.addCustomChart(new Metrics.SimplePie("listener_priority", () -> config.getHighPriority()                                     ? "Monitor" : "Normal"));
+            metrics.addCustomChart(new Metrics.SimplePie("warn_players",      () -> config.getWarnPlayers()                                      ? "Yes" : "No"));
+            metrics.addCustomChart(new Metrics.SimplePie("viaversion",        () -> Bukkit.getPluginManager().isPluginEnabled("ViaVersion")      ? "Yes" : "No"));
+            metrics.addCustomChart(new Metrics.SimplePie("viabackwards",      () -> Bukkit.getPluginManager().isPluginEnabled("ViaBackwards")    ? "Yes" : "No"));
+            metrics.addCustomChart(new Metrics.SimplePie("viarewind",         () -> Bukkit.getPluginManager().isPluginEnabled("ViaRewind")       ? "Yes" : "No"));
+            metrics.addCustomChart(new Metrics.SimplePie("protocolsupport",   () -> Bukkit.getPluginManager().isPluginEnabled("ProtocolSupport") ? "Yes" : "No"));
             
             getLogger().info("Enabled metrics. You may opt-out by changing plugins/bStats/config.yml");
         }
