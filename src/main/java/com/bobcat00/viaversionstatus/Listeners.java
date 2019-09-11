@@ -19,10 +19,11 @@ package com.bobcat00.viaversionstatus;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.plugin.EventExecutor;
 
 import com.bobcat00.viaversionstatus.connections.ProtocolVersion;
 import com.bobcat00.viaversionstatus.connections.PSConnection;
@@ -50,7 +51,23 @@ public final class Listeners implements Listener
     public Listeners(ViaVersionStatus plugin)
     {
         this.plugin = plugin;
-        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+        
+        // Register listener
+        
+        EventPriority priority = EventPriority.NORMAL;
+        if (plugin.config.getHighPriority())
+        {
+            // Use MONITOR if true
+            priority = EventPriority.MONITOR;
+        }
+        
+        plugin.getServer().getPluginManager().registerEvent(PlayerJoinEvent.class, this, priority,
+            new EventExecutor() { public void execute(Listener l, Event e) { onPlayerJoin((PlayerJoinEvent)e); }},
+            plugin);
+        
+        plugin.getLogger().info("Using listener priority " + priority.toString());
+        
+        // Determine which connection(s) to use
         
         via = new ViaConnection();
         ps = new PSConnection();
@@ -87,8 +104,6 @@ public final class Listeners implements Listener
     
     // Player join event
     
-    // Use MONITOR so we get called last. This means we're not allowed to cancel the event.
-    @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerJoin(PlayerJoinEvent e)
     {
         final Player player = e.getPlayer();

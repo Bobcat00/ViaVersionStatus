@@ -46,4 +46,11 @@ public class Config
         return plugin.getConfig().getString("warn-string");
     }
     
+    // Listener priority
+    
+    public boolean getHighPriority()
+    {
+        return plugin.getConfig().getBoolean("high-priority");
+    }
+
 }
