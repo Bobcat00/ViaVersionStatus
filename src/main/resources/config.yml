@@ -5,7 +5,7 @@
 # The string to send to ops when a player joins
 notify-string: "&6Player &c%player% &6is using version &c%version%"
 
-# Warn players when they have a mismatched version 
+# Warn players when they have a mismatched version
 warn-players: true
 warn-string: "&cNOTICE: You are running Minecraft version &e%version%\n&cThe recommended version for this server is &a%server%"
 

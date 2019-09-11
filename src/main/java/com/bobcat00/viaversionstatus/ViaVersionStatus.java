@@ -30,6 +30,8 @@ public final class ViaVersionStatus extends JavaPlugin
     {
         config = new Config(this);
         saveDefaultConfig();
+        reloadConfig();
+        config.saveConfig(); // Ensure config is up to date
         
         listeners = new Listeners(this);
         
