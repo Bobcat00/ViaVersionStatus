@@ -20,6 +20,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
@@ -86,7 +87,8 @@ public final class Listeners implements Listener
     
     // Player join event
     
-    @EventHandler
+    // Use MONITOR so we get called last. This means we're not allowed to cancel the event.
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerJoin(PlayerJoinEvent e)
     {
         final Player player = e.getPlayer();
@@ -161,9 +163,10 @@ public final class Listeners implements Listener
             if (p.hasPermission("viaversionstatus.notify"))
             {
                 p.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                    plugin.config.getNotifyString().replace("%player%",  player.getName()).
-                                                    replace("%version%", clientVersion).
-                                                    replace("%server%",  serverVersion)));
+                    plugin.config.getNotifyString().replace("%player%",      player.getName()).
+                                                    replace("%displayname%", player.getDisplayName()).
+                                                    replace("%version%",     clientVersion).
+                                                    replace("%server%",      serverVersion)));
             }
         }
         
@@ -182,9 +185,10 @@ public final class Listeners implements Listener
                     if (player.isOnline())
                     {
                         player.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                            plugin.config.getWarnString().replace("%player%",  player.getName()).
-                                                          replace("%version%", clientVersion).
-                                                          replace("%server%",  serverVersion)));
+                            plugin.config.getWarnString().replace("%player%",      player.getName()).
+                                                          replace("%displayname%", player.getDisplayName()).
+                                                          replace("%version%",     clientVersion).
+                                                          replace("%server%",      serverVersion)));
                     }
                 }
             }, 5L); // time delay (ticks)
