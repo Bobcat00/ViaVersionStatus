@@ -65,7 +65,7 @@ public final class Listeners implements Listener
             new EventExecutor() { public void execute(Listener l, Event e) { onPlayerJoin((PlayerJoinEvent)e); }},
             plugin);
         
-        plugin.getLogger().info("Using listener priority " + priority.toString());
+        plugin.getLogger().info("Using listener priority " + priority.toString() + ".");
         
         // Determine which connection(s) to use
         
@@ -151,21 +151,6 @@ public final class Listeners implements Listener
         
         final String clientVersion = clientProtocol.getName();
         final String serverVersion = serverProtocol.getName();
-        
-//        // ***** DEBUG *****
-//        plugin.getLogger().info("serverProtocol = " + serverProtocol.toString());
-//        plugin.getLogger().info("clientProtocol = " + clientProtocol.toString());
-//
-//        if (via.isValid())
-//            plugin.getLogger().info("viaProtocol    = " + via.getProtocol(player).toString());
-//        else
-//            plugin.getLogger().info("viaProtocol    = not valid");
-//
-//        if (ps.isValid())
-//            plugin.getLogger().info("psProtocol     = " + ps.getProtocol(player).toString());
-//        else
-//            plugin.getLogger().info("psProtocol     = not valid");
-//        // ***** DEBUG *****
         
         // 1. Write to log file
         
