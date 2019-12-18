@@ -50,6 +50,11 @@ public class PSConnection implements Connection
         
         protocol.id = psProtocol.getId();
         protocol.name = psProtocol.getName();
+        // ProtocolSupport returns a null string if the version is newer than what it knows about
+        if (protocol.name == null)
+        {
+            protocol.name = "Unknown";
+        }
         
         return protocol;
     }
