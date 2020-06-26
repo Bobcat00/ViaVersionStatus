@@ -38,6 +38,11 @@ public class Config
         return plugin.getConfig().getString("notify-string");
     }
     
+    public String getNotifyCommand()
+    {
+        return plugin.getConfig().getString("notify-command");
+    }
+    
     // Warning for players with mismatched version
     
     public boolean getWarnPlayers()
@@ -50,11 +55,35 @@ public class Config
         return plugin.getConfig().getString("warn-string");
     }
     
+    public String getWarnCommand()
+    {
+        return plugin.getConfig().getString("warn-command");
+    }
+    
     // Listener priority
     
     public boolean getHighPriority()
     {
         return plugin.getConfig().getBoolean("high-priority");
+    }
+    
+    //--------------------------------------------------------------------------
+    
+    // Update the config file with new fields.
+    
+    public void updateConfig()
+    {
+        if (!plugin.getConfig().contains("notify-command", true))
+        {
+            plugin.getConfig().set("notify-command", "");
+        }
+        
+        if (!plugin.getConfig().contains("warn-command", true))
+        {
+            plugin.getConfig().set("warn-command", "");
+        }
+        
+        saveConfig();
     }
     
     //--------------------------------------------------------------------------
@@ -78,11 +107,13 @@ public class Config
             
             writer.write("# The string to send to ops when a player joins" + "\n");
             writer.write("notify-string: \"" + plugin.getConfig().getString("notify-string").replaceAll("\n", "\\\\n") + "\"" + "\n");
+            writer.write("notify-command: \"" + plugin.getConfig().getString("notify-command") + "\"" + "\n");
             writer.write("\n");
             
             writer.write("# Warn players when they have a mismatched version" + "\n");
             writer.write("warn-players: " + plugin.getConfig().getBoolean("warn-players") + "\n");
             writer.write("warn-string: \"" + plugin.getConfig().getString("warn-string").replaceAll("\n", "\\\\n") + "\"" + "\n");
+            writer.write("warn-command: \"" + plugin.getConfig().getString("warn-command") + "\"" + "\n");
             writer.write("\n");
             
             writer.write("# Run at the highest priority (MONITOR)" + "\n");

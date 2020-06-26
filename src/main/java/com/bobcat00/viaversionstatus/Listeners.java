@@ -18,6 +18,7 @@ package com.bobcat00.viaversionstatus;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandException;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventPriority;
@@ -170,6 +171,24 @@ public final class Listeners implements Listener
             }
         }
         
+        String notifyCommand = plugin.config.getNotifyCommand();
+        if (!notifyCommand.isEmpty())
+        {
+            notifyCommand = notifyCommand.replace("%player%",      player.getName()).
+                                          replace("%displayname%", player.getDisplayName()).
+                                          replace("%version%",     clientVersion).
+                                          replace("%server%",      serverVersion);
+            plugin.getLogger().info("Executing command " + notifyCommand);
+            try
+            {
+                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), notifyCommand);
+            }
+            catch (CommandException exc)
+            {
+                plugin.getLogger().info("Command returned exception: " + exc.getMessage());
+            }
+        }
+        
         // 3. Warn player
         
         if (plugin.config.getWarnPlayers() &&
@@ -192,6 +211,26 @@ public final class Listeners implements Listener
                     }
                 }
             }, 5L); // time delay (ticks)
+            
+            String warnCommand = plugin.config.getWarnCommand();
+            if (!warnCommand.isEmpty())
+            {
+                warnCommand = warnCommand.replace("%player%",      player.getName()).
+                                          replace("%displayname%", player.getDisplayName()).
+                                          replace("%version%",     clientVersion).
+                                          replace("%server%",      serverVersion);
+                plugin.getLogger().info("Executing command " + warnCommand);
+                try
+                {
+                    Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), warnCommand);
+                }
+                catch (CommandException exc)
+                {
+                    plugin.getLogger().info("Command returned exception: " + exc.getMessage());
+                }
+
+            }
+
         }
 
     }
