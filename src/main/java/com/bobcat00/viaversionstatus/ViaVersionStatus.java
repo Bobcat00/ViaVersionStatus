@@ -36,12 +36,15 @@ public final class ViaVersionStatus extends JavaPlugin
         listeners = new Listeners(this);
         
         // Metrics
-        Metrics metrics = new Metrics(this);
+        int pluginId = 4834;
+        Metrics metrics = new Metrics(this, pluginId);
         if (metrics.isEnabled())
         {
             metrics.addCustomChart(new Metrics.SimplePie("connection_used",   () -> listeners.getConnectionUsed().toString()));
             metrics.addCustomChart(new Metrics.SimplePie("listener_priority", () -> config.getHighPriority()                                     ? "Monitor" : "Normal"));
             metrics.addCustomChart(new Metrics.SimplePie("warn_players",      () -> config.getWarnPlayers()                                      ? "Yes" : "No"));
+            metrics.addCustomChart(new Metrics.SimplePie("notify_command",    () -> !config.getNotifyCommand().isEmpty()                         ? "Yes" : "No"));
+            metrics.addCustomChart(new Metrics.SimplePie("warn_command",      () -> !config.getWarnCommand().isEmpty()                           ? "Yes" : "No"));
             metrics.addCustomChart(new Metrics.SimplePie("viaversion",        () -> Bukkit.getPluginManager().isPluginEnabled("ViaVersion")      ? "Yes" : "No"));
             metrics.addCustomChart(new Metrics.SimplePie("viabackwards",      () -> Bukkit.getPluginManager().isPluginEnabled("ViaBackwards")    ? "Yes" : "No"));
             metrics.addCustomChart(new Metrics.SimplePie("viarewind",         () -> Bukkit.getPluginManager().isPluginEnabled("ViaRewind")       ? "Yes" : "No"));
