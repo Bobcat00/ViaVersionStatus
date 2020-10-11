@@ -16,6 +16,10 @@
 
 package com.bobcat00.viaversionstatus.connections;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.SortedSet;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -74,4 +78,25 @@ public class ViaConnection implements Connection
         
         return protocol;
     }
+    
+    // getSupportedProtocols();
+    
+    public List<ProtocolVersion> getSupportedProtocols()
+    {
+        List<ProtocolVersion> versions = new ArrayList<ProtocolVersion>();
+        
+        if (api != null)
+        {
+            @SuppressWarnings("unchecked")
+            SortedSet<Integer> ids = api.getSupportedVersions();
+            
+            for (Integer id : ids)
+            {
+                versions.add(new ProtocolVersion(id, us.myles.ViaVersion.api.protocol.ProtocolVersion.getProtocol(id).getName()));
+            }
+        }
+        
+        return versions;
+    }
+
 }

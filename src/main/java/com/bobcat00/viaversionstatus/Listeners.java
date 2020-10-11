@@ -16,6 +16,8 @@
 
 package com.bobcat00.viaversionstatus;
 
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandException;
@@ -25,6 +27,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.EventExecutor;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import com.bobcat00.viaversionstatus.connections.ProtocolVersion;
 import com.bobcat00.viaversionstatus.connections.PSConnection;
@@ -46,6 +49,8 @@ public final class Listeners implements Listener
     }
     
     private UseConnection useConnection = UseConnection.USE_NONE;
+    
+    private int protocolListCounter = 0;
     
     // Constructor
     
@@ -93,6 +98,40 @@ public final class Listeners implements Listener
             plugin.getLogger().severe("This plugin requires either ViaVersion or ProtocolSupport or both.");
             plugin.shutdown();
             throw new RuntimeException("ViaVersion or ProtocolSupport required."); // Get the user's attention
+        }
+        
+        // Output supported protocols after giving ViaVersion time to populate them
+        
+        if (useConnection == UseConnection.USE_BOTH || useConnection == UseConnection.USE_VIA)
+        {
+            new BukkitRunnable()
+            {
+                @Override
+                public void run()
+                {
+                    List<ProtocolVersion> protocols = via.getSupportedProtocols();
+
+                    if ((protocols != null)  && (!protocols.isEmpty()))
+                    {
+                        plugin.getLogger().info("ViaVersion supported protocols:");
+                        for(ProtocolVersion protocol : protocols)
+                        {
+                            plugin.getLogger().info(protocol.toString());
+                        }
+                        this.cancel();
+                    }
+                    else
+                    {
+                        ++protocolListCounter;
+                        if (protocolListCounter >= 10)
+                        {
+                            this.cancel();
+                        }
+                    }
+                }
+            }.runTaskTimer(plugin,
+                           200L,  // delay 10 sec
+                           100L); // period 5 sec
         }
     }
     

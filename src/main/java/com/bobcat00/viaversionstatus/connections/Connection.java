@@ -16,6 +16,8 @@
 
 package com.bobcat00.viaversionstatus.connections;
 
+import java.util.List;
+
 import org.bukkit.entity.Player;
 
 public interface Connection
@@ -25,4 +27,6 @@ public interface Connection
     ProtocolVersion getProtocol(Player player);
     
     ProtocolVersion getServerProtocol();
+    
+    List<ProtocolVersion> getSupportedProtocols();
 }

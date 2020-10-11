@@ -16,6 +16,8 @@
 
 package com.bobcat00.viaversionstatus.connections;
 
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -70,5 +72,12 @@ public class PSConnection implements Connection
         protocol.name = ProtocolVersionsHelper.LATEST_PC.getName();
         
         return protocol;
+    }
+    
+    // getSupportedProtocols();
+    
+    public List<ProtocolVersion> getSupportedProtocols()
+    {
+        return null; // not implemented
     }
 }

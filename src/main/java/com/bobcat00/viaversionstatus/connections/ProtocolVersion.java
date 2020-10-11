@@ -21,12 +21,18 @@ public class ProtocolVersion
     int id;
     String name;
     
-    // Constructor
+    // Constructors
     
     ProtocolVersion()
     {
         id = -1;
         name = "UNKNOWN";
+    }
+    
+    ProtocolVersion(int id, String name)
+    {
+        this.id = id;
+        this.name = name;
     }
     
     // Public methods
