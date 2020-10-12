@@ -69,6 +69,13 @@ public class Config
         return plugin.getConfig().getBoolean("high-priority");
     }
     
+    // Supported protocols
+    
+    public boolean getListSupportedProtocols()
+    {
+        return plugin.getConfig().getBoolean("list-supported-protocols");
+    }
+    
     //--------------------------------------------------------------------------
     
     // Update the config file with new fields.
@@ -83,6 +90,11 @@ public class Config
         if (!plugin.getConfig().contains("warn-command", true))
         {
             plugin.getConfig().set("warn-command", "");
+        }
+        
+        if (!plugin.getConfig().contains("list-supported-protocols", true))
+        {
+            plugin.getConfig().set("list-supported-protocols", true);
         }
         
         saveConfig();
@@ -121,6 +133,10 @@ public class Config
             writer.write("# Run at the highest priority (MONITOR)" + "\n");
             writer.write("# Set to true if %displayname% doesn't work as expected" + "\n");
             writer.write("high-priority: " + plugin.getConfig().getBoolean("high-priority") + "\n");
+            writer.write("\n");
+            
+            writer.write("# At startup, list the protocols supported by ViaVersion" + "\n");
+            writer.write("list-supported-protocols: " + plugin.getConfig().getBoolean("list-supported-protocols") + "\n");
             
             writer.close();
         }

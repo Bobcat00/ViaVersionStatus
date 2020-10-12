@@ -102,7 +102,8 @@ public final class Listeners implements Listener
         
         // Output supported protocols after giving ViaVersion time to populate them
         
-        if (useConnection == UseConnection.USE_BOTH || useConnection == UseConnection.USE_VIA)
+        if (plugin.config.getListSupportedProtocols() &&
+            (useConnection == UseConnection.USE_BOTH || useConnection == UseConnection.USE_VIA))
         {
             new BukkitRunnable()
             {
@@ -111,7 +112,7 @@ public final class Listeners implements Listener
                 {
                     List<ProtocolVersion> protocols = via.getSupportedProtocols();
 
-                    if ((protocols != null)  && (!protocols.isEmpty()))
+                    if ((protocols != null) && (!protocols.isEmpty()))
                     {
                         plugin.getLogger().info("ViaVersion supported protocols:");
                         for(ProtocolVersion protocol : protocols)

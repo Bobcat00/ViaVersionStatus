@@ -14,3 +14,6 @@ warn-command: ""
 # Run at the highest priority (MONITOR)
 # Set to true if %displayname% doesn't work as expected
 high-priority: false
+
+# At startup, list the protocols supported by ViaVersion
+list-supported-protocols: true
