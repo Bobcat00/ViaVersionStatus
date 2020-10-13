@@ -50,6 +50,9 @@ public final class Listeners implements Listener
     
     private UseConnection useConnection = UseConnection.USE_NONE;
     
+    // Variables for outputting supported protocols at startup
+    private boolean outputVia = false;
+    private boolean outputPs = false;
     private int protocolListCounter = 0;
     
     // Constructor
@@ -81,16 +84,20 @@ public final class Listeners implements Listener
         if (via.isValid() && ps.isValid())
         {
             useConnection = UseConnection.USE_BOTH;
+            outputVia = true;
+            outputPs = true;
             plugin.getLogger().info("Using both ViaVersion and ProtocolSupport to determine versions.");
         }
         else if (via.isValid())
         {
             useConnection = UseConnection.USE_VIA;
+            outputVia = true;
             plugin.getLogger().info("Using ViaVersion to determine versions.");
         }
         else if (ps.isValid())
         {
             useConnection = UseConnection.USE_PS;
+            outputPs = true;
             plugin.getLogger().info("Using ProtocolSupport to determine versions.");
         }
         else
@@ -100,38 +107,56 @@ public final class Listeners implements Listener
             throw new RuntimeException("ViaVersion or ProtocolSupport required."); // Get the user's attention
         }
         
-        // Output supported protocols after giving ViaVersion time to populate them
+        // Output supported protocols after giving ViaVersion/ProtocolSupport time to populate them
         
-        if (plugin.config.getListSupportedProtocols() &&
-            (useConnection == UseConnection.USE_BOTH || useConnection == UseConnection.USE_VIA))
+        if (plugin.config.getListSupportedProtocols())
         {
             new BukkitRunnable()
             {
                 @Override
                 public void run()
                 {
-                    List<ProtocolVersion> protocols = via.getSupportedProtocols();
+                    if (outputVia)
+                    {
+                        List<ProtocolVersion> protocols = via.getSupportedProtocols();
 
-                    if ((protocols != null) && (!protocols.isEmpty()))
-                    {
-                        plugin.getLogger().info("ViaVersion supported protocols:");
-                        for(ProtocolVersion protocol : protocols)
+                        if ((protocols != null) && (!protocols.isEmpty()))
                         {
-                            plugin.getLogger().info(protocol.toString());
+                            plugin.getLogger().info("ViaVersion supported protocols:");
+                            for(ProtocolVersion protocol : protocols)
+                            {
+                                plugin.getLogger().info(protocol.toString());
+                            }
+                            // Indicate done
+                            outputVia = false;
                         }
-                        this.cancel();
                     }
-                    else
+                    
+                    if (outputPs)
                     {
-                        ++protocolListCounter;
-                        if (protocolListCounter >= 10)
+                        List<ProtocolVersion> protocols = ps.getSupportedProtocols();
+
+                        if ((protocols != null) && (!protocols.isEmpty()))
                         {
-                            this.cancel();
+                            plugin.getLogger().info("ProtocolSupport supported protocols:");
+                            for(ProtocolVersion protocol : protocols)
+                            {
+                                plugin.getLogger().info(protocol.toString());
+                            }
+                            // Indicate done
+                            outputPs = false;
                         }
+                    }
+
+                    ++protocolListCounter;
+                    // Cancel if nothing more is to be done or if we tried 10 times
+                    if ((!outputVia && !outputPs) || protocolListCounter >= 10)
+                    {
+                        this.cancel();
                     }
                 }
             }.runTaskTimer(plugin,
-                           200L,  // delay 10 sec
+                           100L,  // delay 5 sec
                            100L); // period 5 sec
         }
     }

@@ -16,6 +16,8 @@
 
 package com.bobcat00.viaversionstatus.connections;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -78,6 +80,18 @@ public class PSConnection implements Connection
     
     public List<ProtocolVersion> getSupportedProtocols()
     {
-        return null; // not implemented
+        List<ProtocolVersion> versions = new ArrayList<ProtocolVersion>();
+        
+        Collection<protocolsupport.api.ProtocolVersion> pvs = ProtocolSupportAPI.getEnabledProtocolVersions();
+            
+        for (protocolsupport.api.ProtocolVersion psProtocol : pvs)
+        {
+            versions.add(new ProtocolVersion(psProtocol.getId(), psProtocol.getName()));
+        }
+        // Sort the list because the values from ProtocolSupport are unsorted
+        versions.sort((ProtocolVersion pv1, ProtocolVersion pv2)->pv1.id-pv2.id);
+        
+        return versions;
     }
+
 }
