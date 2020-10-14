@@ -63,6 +63,10 @@
       <id>viaversion-repo</id>
       <url>https://repo.viaversion.com</url>
     </repository>
+    <repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
+    </repository>
     <!--  bStats -->
     <repository>
       <id>CodeMC</id>
@@ -81,6 +85,12 @@
       <groupId>us.myles</groupId>
       <artifactId>viaversion</artifactId>
       <version>3.1.1</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.github.ProtocolSupport</groupId>
+      <artifactId>ProtocolSupport</artifactId>
+      <version>master-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
     <!--  bStats -->
