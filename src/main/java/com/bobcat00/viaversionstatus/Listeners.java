@@ -241,7 +241,8 @@ public final class Listeners implements Listener
                 {
                     for (Player p : Bukkit.getServer().getOnlinePlayers())
                     {
-                        if (p.hasPermission("viaversionstatus.notify"))
+                        if (p.hasPermission("viaversionstatus.notify") &&
+                            (!p.hasPermission("viaversionstatus.notify.ignoresame") || (clientProtocol.getId() != serverProtocol.getId())))
                         {
                             p.sendMessage(ChatColor.translateAlternateColorCodes('&',
                                 notifyMessage.replace("%player%",      player.getName()).

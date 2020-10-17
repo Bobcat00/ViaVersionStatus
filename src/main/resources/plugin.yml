@@ -55,3 +55,6 @@ permissions:
   viaversionstatus.notify:
     description: Allows this player to receive messages for other players' client versions at join
     default: op
+  viaversionstatus.notify.ignoresame:
+    description: Do not display version if client version equals server version
+    default: false
