@@ -80,19 +80,25 @@ public class Config
     
     // Update the config file with new fields.
     
+    private boolean contains(String path, boolean ignoreDefault)
+    {
+        // This duplicates the method added in 1.9, Bukkit commit facc9c353c3
+        return ((ignoreDefault) ? plugin.getConfig().get(path, null) : plugin.getConfig().get(path)) != null;
+    }
+    
     public void updateConfig()
     {
-        if (!plugin.getConfig().contains("notify-command", true))
+        if (!contains("notify-command", true))
         {
             plugin.getConfig().set("notify-command", "");
         }
         
-        if (!plugin.getConfig().contains("warn-command", true))
+        if (!contains("warn-command", true))
         {
             plugin.getConfig().set("warn-command", "");
         }
         
-        if (!plugin.getConfig().contains("list-supported-protocols", true))
+        if (!contains("list-supported-protocols", true))
         {
             plugin.getConfig().set("list-supported-protocols", true);
         }
