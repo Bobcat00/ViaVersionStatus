@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.bobcat00</groupId>
   <artifactId>ViaVersionStatus</artifactId>
-  <version>3.06</version>
+  <version>3.07-SNAPSHOT</version>
   <build>
     <resources>
       <resource>
