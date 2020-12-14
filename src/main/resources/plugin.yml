@@ -5,17 +5,24 @@ author: Bobcat00
 api-version: 1.13
 softdepend: [ViaVersion, ProtocolSupport, ViaBackwards, ViaRewind]
 permissions:
+  viaversionstatus.exempt.*:
+    description: Exempts this player from processing at join
+    children:
+      viaversionstatus.exempt: true
+      viaversionstatus.exempt.log: true
+      viaversionstatus.exempt.notify: true
+      viaversionstatus.exempt.warn: true
   viaversionstatus.exempt:
     description: Exempts this player from all processing at join
     default: false
   viaversionstatus.exempt.log:
-    description: Exempts this player from clint version being logged at join
+    description: Exempts this player from client version being logged at join
     default: false
   viaversionstatus.exempt.notify:
     description: Exempts this player from notifying other players at join
     default: false
   viaversionstatus.exempt.warn:
-    description: Exempts this player from receiving a mis-matched version warning
+    description: Exempts this player from receiving a mismatched version warning
     default: false
   viaversionstatus.notify:
     description: Display other player client version at join
