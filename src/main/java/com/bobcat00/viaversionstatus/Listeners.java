@@ -174,6 +174,11 @@ public final class Listeners implements Listener
     {
         final Player player = e.getPlayer();
         
+        if (player.hasPermission("viaversionstatus.exempt"))
+        {
+            return;
+        }
+        
         // Protocol consists of a Name and Id (toString returns both as a combined string)
         ProtocolVersion serverProtocol = null;
         ProtocolVersion clientProtocol = null;
@@ -220,37 +225,43 @@ public final class Listeners implements Listener
         
         // 1. Write to log file
         
-        plugin.getLogger().info(player.getName() + " is using version " + clientProtocol.toString() + ".");
-        
-        // 2. Notify ops
-      
-        for (Player p: Bukkit.getServer().getOnlinePlayers())
+        if (!player.hasPermission("viaversionstatus.exempt.log"))
         {
-            if (p.hasPermission("viaversionstatus.notify"))
-            {
-                p.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                    plugin.config.getNotifyString().replace("%player%",      player.getName()).
-                                                    replace("%displayname%", player.getDisplayName()).
-                                                    replace("%version%",     clientVersion).
-                                                    replace("%server%",      serverVersion)));
-            }
+            plugin.getLogger().info(player.getName() + " is using version " + clientProtocol.toString() + ".");
         }
         
-        String notifyCommand = plugin.config.getNotifyCommand();
-        if (!notifyCommand.isEmpty())
+        // 2. Notify ops
+        
+        if (!player.hasPermission("viaversionstatus.exempt.notify"))
         {
-            notifyCommand = notifyCommand.replace("%player%",      player.getName()).
-                                          replace("%displayname%", player.getDisplayName()).
-                                          replace("%version%",     clientVersion).
-                                          replace("%server%",      serverVersion);
-            plugin.getLogger().info("Executing command " + notifyCommand);
-            try
+            for (Player p: Bukkit.getServer().getOnlinePlayers())
             {
-                Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), notifyCommand);
+                if (p.hasPermission("viaversionstatus.notify"))
+                {
+                    p.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                            plugin.config.getNotifyString().replace("%player%",      player.getName()).
+                            replace("%displayname%", player.getDisplayName()).
+                            replace("%version%",     clientVersion).
+                            replace("%server%",      serverVersion)));
+                }
             }
-            catch (CommandException exc)
+            
+            String notifyCommand = plugin.config.getNotifyCommand();
+            if (!notifyCommand.isEmpty())
             {
-                plugin.getLogger().info("Command returned exception: " + exc.getMessage());
+                notifyCommand = notifyCommand.replace("%player%",      player.getName()).
+                        replace("%displayname%", player.getDisplayName()).
+                        replace("%version%",     clientVersion).
+                        replace("%server%",      serverVersion);
+                plugin.getLogger().info("Executing command " + notifyCommand);
+                try
+                {
+                    Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), notifyCommand);
+                }
+                catch (CommandException exc)
+                {
+                    plugin.getLogger().info("Command returned exception: " + exc.getMessage());
+                }
             }
         }
         
@@ -258,7 +269,8 @@ public final class Listeners implements Listener
         
         if (plugin.config.getWarnPlayers() &&
             !serverVersion.equals("UNKNOWN") &&
-            (clientProtocol.getId() != serverProtocol.getId()))
+            (clientProtocol.getId() != serverProtocol.getId()) &&
+            !player.hasPermission("viaversionstatus.exempt.warn"))
         {
             // Delay by 250 msec to make sure the player sees the message
             Bukkit.getScheduler().runTaskLater(plugin, new Runnable()
