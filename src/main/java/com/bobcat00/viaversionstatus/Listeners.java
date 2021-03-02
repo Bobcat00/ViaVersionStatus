@@ -305,9 +305,14 @@ public final class Listeners implements Listener
                 {
                     plugin.getLogger().info("Command returned exception: " + exc.getMessage());
                 }
-
             }
-
+        }
+        
+        // 4. Send to Prism
+        
+        if (plugin.prismHooked)
+        {
+            plugin.prismEvent.callPrismEvent(plugin, "vvs-client-connect", player, clientProtocol.toString());
         }
 
     }

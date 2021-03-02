@@ -18,12 +18,23 @@ package com.bobcat00.viaversionstatus;
 
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import me.botsko.prism.Prism;
+import me.botsko.prism.actionlibs.ActionTypeImpl;
+import me.botsko.prism.exceptions.InvalidActionException;
 
 public final class ViaVersionStatus extends JavaPlugin
 {
+    ViaVersionStatus plugin = this;
     Config config;
     Listeners listeners;
+    Prism prism;
+    PrismEvent prismEvent; // Used to send event to Prism
+    boolean prismHooked = false;
+    int prismCounter = 0;
     
     @Override
     public void onEnable()
@@ -34,6 +45,65 @@ public final class ViaVersionStatus extends JavaPlugin
         config.updateConfig();
         
         listeners = new Listeners(this);
+        
+        // Prism
+        if (config.getPrismIntegration())
+        {
+            Plugin prismPlugin = Bukkit.getPluginManager().getPlugin("Prism");
+            if (prismPlugin != null && prismPlugin.isEnabled())
+            {
+                prism = (Prism) prismPlugin;
+                
+                // Register our custom event. We have to wait until Prism is fully up and running.
+                // We do this by waiting for PurgeManager to be set.
+                
+                new BukkitRunnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        if (prism.getPurgeManager() != null)
+                        {
+                            try
+                            {
+                                // Register the custom event
+                                ActionTypeImpl actionType = new ActionTypeImpl("vvs-client-connect", PrismPlayerAction.class, "client version");
+                                Prism.getActionRegistry().registerCustomAction(plugin, actionType);
+                                prismEvent = new PrismEvent();
+                                prismHooked = true;
+                                getLogger().info("Hooked into Prism.");
+                                this.cancel();
+                            }
+                            catch (InvalidActionException e)
+                            {
+                                // Exception thrown by Prism
+                                getLogger().info("Unable to hook into Prism:");
+                                getLogger().info(e.getMessage());
+                                getLogger().info("Check Prism's config to ensure that tracking.api is true");
+                                getLogger().info("and ViaVersionStatus is in the allowed-plugins list.");
+                                this.cancel(); // only try once
+                            }
+                        }
+                        else
+                        {
+                            ++prismCounter;
+                            // Cancel if we tried 50 times
+                            if (prismCounter >= 50)
+                            {
+                                getLogger().info("Unable to hook into Prism. Check if Prism is working.");
+                                this.cancel();
+                            }
+                        }
+                    }
+                }.runTaskTimer(this,
+                               1L,  // delay 1 tick
+                               4L); // period 200 msec
+            }
+            else
+            {
+                getLogger().info("prism-integration is true but Prism is not present or not enabled.");
+            }
+        }
         
         // Metrics
         int pluginId = 4834;

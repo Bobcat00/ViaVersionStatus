@@ -76,6 +76,13 @@ public class Config
         return plugin.getConfig().getBoolean("list-supported-protocols");
     }
     
+    // Prism integration
+    
+    public boolean getPrismIntegration()
+    {
+        return plugin.getConfig().getBoolean("prism-integration");
+    }
+    
     //--------------------------------------------------------------------------
     
     // Update the config file with new fields.
@@ -101,6 +108,11 @@ public class Config
         if (!contains("list-supported-protocols", true))
         {
             plugin.getConfig().set("list-supported-protocols", true);
+        }
+        
+        if (!contains("prism-integration", true))
+        {
+            plugin.getConfig().set("prism-integration",  false);
         }
         
         saveConfig();
@@ -143,7 +155,11 @@ public class Config
             
             writer.write("# At startup, list the protocols supported by ViaVersion" + "\n");
             writer.write("list-supported-protocols: " + plugin.getConfig().getBoolean("list-supported-protocols") + "\n");
+            writer.write("\n");
             
+            writer.write("# Record data via Prism, with the action vvs-client-connect" + "\n");
+            writer.write("prism-integration: " + plugin.getConfig().getBoolean("prism-integration") + "\n");
+
             writer.close();
         }
         catch(Exception e)
