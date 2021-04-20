@@ -11,6 +11,7 @@ permissions:
       viaversionstatus.exempt.log: true
       viaversionstatus.exempt.notify: true
       viaversionstatus.exempt.warn: true
+      viaversionstatus.exempt.warn.newer: true
   viaversionstatus.exempt:
     description: Exempts this player from all processing at join
     default: false
@@ -21,8 +22,11 @@ permissions:
     description: Exempts this player from notifying other players at join
     default: false
   viaversionstatus.exempt.warn:
-    description: Exempts this player from receiving a mismatched version warning
+    description: Exempts this player from receiving an older version warning
+    default: false
+  viaversionstatus.exempt.warn.newer:
+    description: Exempts this player from receiving a newer version warning
     default: false
   viaversionstatus.notify:
-    description: Display other player client version at join
+    description: Displays other players' client versions at join
     default: op
