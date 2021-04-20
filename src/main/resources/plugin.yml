@@ -2,7 +2,6 @@ name: ViaVersionStatus
 main: com.bobcat00.viaversionstatus.ViaVersionStatus
 version: ${project.version}
 author: Bobcat00
-api-version: 1.13
 softdepend: [ViaVersion, ProtocolSupport, ViaBackwards, ViaRewind, Prism]
 permissions:
   viaversionstatus.exempt.*:
