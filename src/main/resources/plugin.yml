@@ -28,5 +28,5 @@ permissions:
     description: Exempts this player from receiving a newer version warning
     default: false
   viaversionstatus.notify:
-    description: Displays other players' client versions at join
+    description: Allows this player to receive messages for other players' client versions at join
     default: op
