@@ -234,33 +234,31 @@ public final class Listeners implements Listener
         
         if (!player.hasPermission("viaversionstatus.exempt.notify"))
         {
-            for (Player p: Bukkit.getServer().getOnlinePlayers())
-            {
-                if (p.hasPermission("viaversionstatus.notify"))
-                {
-                    p.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                            plugin.config.getNotifyString().replace("%player%",      player.getName()).
-                            replace("%displayname%", player.getDisplayName()).
-                            replace("%version%",     clientVersion).
-                            replace("%server%",      serverVersion)));
+            if (!player.hasPermission("viaversionstatus.exempt.notify.message")) {
+                for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+                    if (p.hasPermission("viaversionstatus.notify")) {
+                        p.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                                plugin.config.getNotifyString().replace("%player%", player.getName()).
+                                                                replace("%displayname%", player.getDisplayName()).
+                                                                replace("%version%", clientVersion).
+                                                                replace("%server%", serverVersion)));
+                    }
                 }
             }
-            
-            String notifyCommand = plugin.config.getNotifyCommand();
-            if (!notifyCommand.isEmpty())
-            {
-                notifyCommand = notifyCommand.replace("%player%",      player.getName()).
-                        replace("%displayname%", player.getDisplayName()).
-                        replace("%version%",     clientVersion).
-                        replace("%server%",      serverVersion);
-                plugin.getLogger().info("Executing command " + notifyCommand);
-                try
-                {
-                    Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), notifyCommand);
-                }
-                catch (CommandException exc)
-                {
-                    plugin.getLogger().info("Command returned exception: " + exc.getMessage());
+
+            if (!player.hasPermission("viaversionstatus.exempt.notify.command")) {
+                String notifyCommand = plugin.config.getNotifyCommand();
+                if (!notifyCommand.isEmpty()) {
+                    notifyCommand = notifyCommand.replace("%player%", player.getName()).
+                                                  replace("%displayname%", player.getDisplayName()).
+                                                  replace("%version%", clientVersion).
+                                                  replace("%server%", serverVersion);
+                    plugin.getLogger().info("Executing command " + notifyCommand);
+                    try {
+                        Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), notifyCommand);
+                    } catch (CommandException exc) {
+                        plugin.getLogger().info("Command returned exception: " + exc.getMessage());
+                    }
                 }
             }
         }
@@ -272,38 +270,35 @@ public final class Listeners implements Listener
             (clientProtocol.getId() < serverProtocol.getId()) &&
             !player.hasPermission("viaversionstatus.exempt.warn"))
         {
-            // Delay by 250 msec (5 ticks) to make sure the player sees the message
-            Bukkit.getScheduler().runTaskLater(plugin, new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    if (player.isOnline())
-                    {
-                        player.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                            plugin.config.getOlderVersionWarnString().replace("%player%",      player.getName()).
-                                                                      replace("%displayname%", player.getDisplayName()).
-                                                                      replace("%version%",     clientVersion).
-                                                                      replace("%server%",      serverVersion)));
+            if (!player.hasPermission("viaversionstatus.exempt.warn.message")) {
+                // Delay by 250 msec (5 ticks) to make sure the player sees the message
+                Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+                    @Override
+                    public void run() {
+                        if (player.isOnline()) {
+                            player.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                                    plugin.config.getOlderVersionWarnString().replace("%player%", player.getName()).
+                                                                              replace("%displayname%", player.getDisplayName()).
+                                                                              replace("%version%", clientVersion).
+                                                                              replace("%server%", serverVersion)));
+                        }
                     }
-                }
-            }, 5L); // time delay (ticks)
-            
-            String warnCommand = plugin.config.getOlderVersionWarnCommand();
-            if (!warnCommand.isEmpty())
-            {
-                warnCommand = warnCommand.replace("%player%",      player.getName()).
-                                          replace("%displayname%", player.getDisplayName()).
-                                          replace("%version%",     clientVersion).
-                                          replace("%server%",      serverVersion);
-                plugin.getLogger().info("Executing command " + warnCommand);
-                try
-                {
-                    Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), warnCommand);
-                }
-                catch (CommandException exc)
-                {
-                    plugin.getLogger().info("Command returned exception: " + exc.getMessage());
+                }, 5L); // time delay (ticks)
+            }
+
+            if (!player.hasPermission("viaversionstatus.exempt.warn.command")) {
+                String warnCommand = plugin.config.getOlderVersionWarnCommand();
+                if (!warnCommand.isEmpty()) {
+                    warnCommand = warnCommand.replace("%player%", player.getName()).
+                                              replace("%displayname%", player.getDisplayName()).
+                                              replace("%version%", clientVersion).
+                                              replace("%server%", serverVersion);
+                    plugin.getLogger().info("Executing command " + warnCommand);
+                    try {
+                        Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), warnCommand);
+                    } catch (CommandException exc) {
+                        plugin.getLogger().info("Command returned exception: " + exc.getMessage());
+                    }
                 }
             }
         }
@@ -315,38 +310,35 @@ public final class Listeners implements Listener
             (clientProtocol.getId() > serverProtocol.getId()) &&
             !player.hasPermission("viaversionstatus.exempt.warn.newer"))
         {
-            // Delay by 250 msec (5 ticks) to make sure the player sees the message
-            Bukkit.getScheduler().runTaskLater(plugin, new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    if (player.isOnline())
-                    {
-                        player.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                            plugin.config.getNewerVersionWarnString().replace("%player%",      player.getName()).
-                                                                      replace("%displayname%", player.getDisplayName()).
-                                                                      replace("%version%",     clientVersion).
-                                                                      replace("%server%",      serverVersion)));
+            if (!player.hasPermission("viaversionstatus.exempt.warn.newer.message")) {
+                // Delay by 250 msec (5 ticks) to make sure the player sees the message
+                Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+                    @Override
+                    public void run() {
+                        if (player.isOnline()) {
+                            player.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                                    plugin.config.getNewerVersionWarnString().replace("%player%", player.getName()).
+                                                                              replace("%displayname%", player.getDisplayName()).
+                                                                              replace("%version%", clientVersion).
+                                                                              replace("%server%", serverVersion)));
+                        }
                     }
-                }
-            }, 5L); // time delay (ticks)
+                }, 5L); // time delay (ticks)
+            }
 
-            String newerVersionWarnCommand = plugin.config.getNewerVersionWarnCommand();
-            if (!newerVersionWarnCommand.isEmpty())
-            {
-                newerVersionWarnCommand = newerVersionWarnCommand.replace("%player%",      player.getName()).
-                                          replace("%displayname%", player.getDisplayName()).
-                                          replace("%version%",     clientVersion).
-                                          replace("%server%",      serverVersion);
-                plugin.getLogger().info("Executing command " + newerVersionWarnCommand);
-                try
-                {
-                    Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), newerVersionWarnCommand);
-                }
-                catch (CommandException exc)
-                {
-                    plugin.getLogger().info("Command returned exception: " + exc.getMessage());
+            if (!player.hasPermission("viaversionstatus.exempt.warn.newer.command")) {
+                String newerVersionWarnCommand = plugin.config.getNewerVersionWarnCommand();
+                if (!newerVersionWarnCommand.isEmpty()) {
+                    newerVersionWarnCommand = newerVersionWarnCommand.replace("%player%", player.getName()).
+                                                                      replace("%displayname%", player.getDisplayName()).
+                                                                      replace("%version%", clientVersion).
+                                                                      replace("%server%", serverVersion);
+                    plugin.getLogger().info("Executing command " + newerVersionWarnCommand);
+                    try {
+                        Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), newerVersionWarnCommand);
+                    } catch (CommandException exc) {
+                        plugin.getLogger().info("Command returned exception: " + exc.getMessage());
+                    }
                 }
             }
         }
