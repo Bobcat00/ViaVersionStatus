@@ -305,7 +305,7 @@ public final class Listeners implements Listener
 
         // 4. Warn player if they are connecting using a newer version
 
-        if (plugin.config.getOlderVersionWarnPlayers() &&
+        if (plugin.config.getNewerVersionWarnPlayers() &&
             !serverVersion.equals("UNKNOWN") &&
             (clientProtocol.getId() > serverProtocol.getId()) &&
             !player.hasPermission("viaversionstatus.exempt.warn.newer"))
