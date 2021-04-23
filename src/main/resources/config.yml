@@ -12,7 +12,7 @@ warn-string: "&cNOTICE: You are running Minecraft version &e%version%\n&cThe rec
 warn-command: ""
 
 # Warn players when they are using a newer version
-warn-players-newer: false
+warn-players-newer: true
 warn-string-newer: "&cNOTICE: You are running Minecraft version &e%version%\n&cThe recommended version for this server is &a%server%"
 warn-command-newer: ""
 

@@ -122,7 +122,7 @@ public class Config
 
         if (!contains("warn-players-newer", true))
         {
-            plugin.getConfig().set("warn-players-newer", false);
+            plugin.getConfig().set("warn-players-newer", true);
         }
 
         if (!contains("warn-string-newer", true))
