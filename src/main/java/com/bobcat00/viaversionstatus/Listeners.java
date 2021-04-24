@@ -229,14 +229,17 @@ public final class Listeners implements Listener
         {
             plugin.getLogger().info(player.getName() + " is using version " + clientProtocol.toString() + ".");
         }
-        
-        // 2. Notify ops
-        
+
+        // 2. Notify any player with the `viaversionstatus.notify` permission (ops by default)
+
         if (!player.hasPermission("viaversionstatus.exempt.notify"))
         {
-            if (!player.hasPermission("viaversionstatus.exempt.notify.message")) {
-                for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-                    if (p.hasPermission("viaversionstatus.notify")) {
+            if (!player.hasPermission("viaversionstatus.exempt.notify.message"))
+            {
+                for (Player p : Bukkit.getServer().getOnlinePlayers())
+                {
+                    if (p.hasPermission("viaversionstatus.notify"))
+                    {
                         p.sendMessage(ChatColor.translateAlternateColorCodes('&',
                                 plugin.config.getNotifyString().replace("%player%", player.getName()).
                                                                 replace("%displayname%", player.getDisplayName()).
@@ -246,17 +249,22 @@ public final class Listeners implements Listener
                 }
             }
 
-            if (!player.hasPermission("viaversionstatus.exempt.notify.command")) {
+            if (!player.hasPermission("viaversionstatus.exempt.notify.command"))
+            {
                 String notifyCommand = plugin.config.getNotifyCommand();
-                if (!notifyCommand.isEmpty()) {
+                if (!notifyCommand.isEmpty())
+                {
                     notifyCommand = notifyCommand.replace("%player%", player.getName()).
                                                   replace("%displayname%", player.getDisplayName()).
                                                   replace("%version%", clientVersion).
                                                   replace("%server%", serverVersion);
                     plugin.getLogger().info("Executing command " + notifyCommand);
-                    try {
+                    try
+                    {
                         Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), notifyCommand);
-                    } catch (CommandException exc) {
+                    }
+                    catch (CommandException exc)
+                    {
                         plugin.getLogger().info("Command returned exception: " + exc.getMessage());
                     }
                 }
@@ -270,12 +278,16 @@ public final class Listeners implements Listener
             (clientProtocol.getId() < serverProtocol.getId()) &&
             !player.hasPermission("viaversionstatus.exempt.warn"))
         {
-            if (!player.hasPermission("viaversionstatus.exempt.warn.message")) {
+            if (!player.hasPermission("viaversionstatus.exempt.warn.message"))
+            {
                 // Delay by 250 msec (5 ticks) to make sure the player sees the message
-                Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+                Bukkit.getScheduler().runTaskLater(plugin, new Runnable()
+                {
                     @Override
-                    public void run() {
-                        if (player.isOnline()) {
+                    public void run()
+                    {
+                        if (player.isOnline())
+                        {
                             player.sendMessage(ChatColor.translateAlternateColorCodes('&',
                                     plugin.config.getOlderVersionWarnString().replace("%player%", player.getName()).
                                                                               replace("%displayname%", player.getDisplayName()).
@@ -286,17 +298,22 @@ public final class Listeners implements Listener
                 }, 5L); // time delay (ticks)
             }
 
-            if (!player.hasPermission("viaversionstatus.exempt.warn.command")) {
+            if (!player.hasPermission("viaversionstatus.exempt.warn.command"))
+            {
                 String warnCommand = plugin.config.getOlderVersionWarnCommand();
-                if (!warnCommand.isEmpty()) {
+                if (!warnCommand.isEmpty())
+                {
                     warnCommand = warnCommand.replace("%player%", player.getName()).
                                               replace("%displayname%", player.getDisplayName()).
                                               replace("%version%", clientVersion).
                                               replace("%server%", serverVersion);
                     plugin.getLogger().info("Executing command " + warnCommand);
-                    try {
+                    try
+                    {
                         Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), warnCommand);
-                    } catch (CommandException exc) {
+                    }
+                    catch (CommandException exc)
+                    {
                         plugin.getLogger().info("Command returned exception: " + exc.getMessage());
                     }
                 }
@@ -310,12 +327,16 @@ public final class Listeners implements Listener
             (clientProtocol.getId() > serverProtocol.getId()) &&
             !player.hasPermission("viaversionstatus.exempt.warn.newer"))
         {
-            if (!player.hasPermission("viaversionstatus.exempt.warn.newer.message")) {
+            if (!player.hasPermission("viaversionstatus.exempt.warn.newer.message"))
+            {
                 // Delay by 250 msec (5 ticks) to make sure the player sees the message
-                Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+                Bukkit.getScheduler().runTaskLater(plugin, new Runnable()
+                {
                     @Override
-                    public void run() {
-                        if (player.isOnline()) {
+                    public void run()
+                    {
+                        if (player.isOnline())
+                        {
                             player.sendMessage(ChatColor.translateAlternateColorCodes('&',
                                     plugin.config.getNewerVersionWarnString().replace("%player%", player.getName()).
                                                                               replace("%displayname%", player.getDisplayName()).
@@ -326,17 +347,22 @@ public final class Listeners implements Listener
                 }, 5L); // time delay (ticks)
             }
 
-            if (!player.hasPermission("viaversionstatus.exempt.warn.newer.command")) {
+            if (!player.hasPermission("viaversionstatus.exempt.warn.newer.command"))
+            {
                 String newerVersionWarnCommand = plugin.config.getNewerVersionWarnCommand();
-                if (!newerVersionWarnCommand.isEmpty()) {
+                if (!newerVersionWarnCommand.isEmpty())
+                {
                     newerVersionWarnCommand = newerVersionWarnCommand.replace("%player%", player.getName()).
                                                                       replace("%displayname%", player.getDisplayName()).
                                                                       replace("%version%", clientVersion).
                                                                       replace("%server%", serverVersion);
                     plugin.getLogger().info("Executing command " + newerVersionWarnCommand);
-                    try {
+                    try
+                    {
                         Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), newerVersionWarnCommand);
-                    } catch (CommandException exc) {
+                    }
+                    catch (CommandException exc)
+                    {
                         plugin.getLogger().info("Command returned exception: " + exc.getMessage());
                     }
                 }
