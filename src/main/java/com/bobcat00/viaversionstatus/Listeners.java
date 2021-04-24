@@ -241,10 +241,10 @@ public final class Listeners implements Listener
                     if (p.hasPermission("viaversionstatus.notify"))
                     {
                         p.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                            plugin.config.getNotifyString().replace("%player%", player.getName()).
+                            plugin.config.getNotifyString().replace("%player%",      player.getName()).
                                                             replace("%displayname%", player.getDisplayName()).
-                                                            replace("%version%", clientVersion).
-                                                            replace("%server%", serverVersion)));
+                                                            replace("%version%",     clientVersion).
+                                                            replace("%server%",      serverVersion)));
                     }
                 }
             }
@@ -254,10 +254,10 @@ public final class Listeners implements Listener
                 String notifyCommand = plugin.config.getNotifyCommand();
                 if (!notifyCommand.isEmpty())
                 {
-                    notifyCommand = notifyCommand.replace("%player%", player.getName()).
+                    notifyCommand = notifyCommand.replace("%player%",      player.getName()).
                                                   replace("%displayname%", player.getDisplayName()).
-                                                  replace("%version%", clientVersion).
-                                                  replace("%server%", serverVersion);
+                                                  replace("%version%",     clientVersion).
+                                                  replace("%server%",      serverVersion);
                     plugin.getLogger().info("Executing command " + notifyCommand);
                     try
                     {
@@ -313,10 +313,10 @@ public final class Listeners implements Listener
                     if (targetPlayer.isOnline())
                     {
                         targetPlayer.sendMessage(ChatColor.translateAlternateColorCodes('&',
-                            warnMessageFromPreferences.replace("%player%", targetPlayer.getName()).
+                            warnMessageFromPreferences.replace("%player%",      targetPlayer.getName()).
                                                        replace("%displayname%", targetPlayer.getDisplayName()).
-                                                       replace("%version%", currentPlayerClientVersion).
-                                                       replace("%server%", currentServerVersion)));
+                                                       replace("%version%",     currentPlayerClientVersion).
+                                                       replace("%server%",      currentServerVersion)));
                     }
                 }
             }, 5L); // time delay (ticks)
@@ -326,10 +326,10 @@ public final class Listeners implements Listener
         {
             if (!warnCommandFromPreferences.isEmpty())
             {
-                warnCommandFromPreferences = warnCommandFromPreferences.replace("%player%", targetPlayer.getName()).
+                warnCommandFromPreferences = warnCommandFromPreferences.replace("%player%",      targetPlayer.getName()).
                                                                         replace("%displayname%", targetPlayer.getDisplayName()).
-                                                                        replace("%version%", currentPlayerClientVersion).
-                                                                        replace("%server%", currentServerVersion);
+                                                                        replace("%version%",     currentPlayerClientVersion).
+                                                                        replace("%server%",      currentServerVersion);
                 plugin.getLogger().info("Executing command " + warnCommandFromPreferences);
                 try
                 {
