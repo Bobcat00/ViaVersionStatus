@@ -47,19 +47,34 @@ public class Config
     
     // Warning for players with mismatched version
     
-    public boolean getWarnPlayers()
+    public boolean getOlderVersionWarnPlayers()
     {
         return plugin.getConfig().getBoolean("warn-players");
     }
     
-    public String getWarnString()
+    public String getOlderVersionWarnString()
     {
         return plugin.getConfig().getString("warn-string");
     }
     
-    public String getWarnCommand()
+    public String getOlderVersionWarnCommand()
     {
         return plugin.getConfig().getString("warn-command");
+    }
+
+    public boolean getNewerVersionWarnPlayers()
+    {
+        return plugin.getConfig().getBoolean("warn-players-newer");
+    }
+
+    public String getNewerVersionWarnString()
+    {
+        return plugin.getConfig().getString("warn-string-newer");
+    }
+
+    public String getNewerVersionWarnCommand()
+    {
+        return plugin.getConfig().getString("warn-command-newer");
     }
     
     // Listener priority
@@ -104,6 +119,21 @@ public class Config
         {
             plugin.getConfig().set("warn-command", "");
         }
+
+        if (!contains("warn-players-newer", true))
+        {
+            plugin.getConfig().set("warn-players-newer", true);
+        }
+
+        if (!contains("warn-string-newer", true))
+        {
+            plugin.getConfig().set("warn-string-newer", "&cNOTICE: You are running Minecraft version &e%version%\n&cThe recommended version for this server is &a%server%");
+        }
+
+        if (!contains("warn-command-newer", true))
+        {
+            plugin.getConfig().set("warn-command-newer", "");
+        }
         
         if (!contains("list-supported-protocols", true))
         {
@@ -142,10 +172,16 @@ public class Config
             writer.write("notify-command: \"" + plugin.getConfig().getString("notify-command") + "\"" + "\n");
             writer.write("\n");
             
-            writer.write("# Warn players when they have a mismatched version" + "\n");
+            writer.write("# Warn players when they are using an older version" + "\n");
             writer.write("warn-players: " + plugin.getConfig().getBoolean("warn-players") + "\n");
             writer.write("warn-string: \"" + plugin.getConfig().getString("warn-string").replaceAll("\n", "\\\\n") + "\"" + "\n");
             writer.write("warn-command: \"" + plugin.getConfig().getString("warn-command") + "\"" + "\n");
+            writer.write("\n");
+
+            writer.write("# Warn players when they are using a newer version" + "\n");
+            writer.write("warn-players-newer: " + plugin.getConfig().getBoolean("warn-players-newer") + "\n");
+            writer.write("warn-string-newer: \"" + plugin.getConfig().getString("warn-string-newer").replaceAll("\n", "\\\\n") + "\"" + "\n");
+            writer.write("warn-command-newer: \"" + plugin.getConfig().getString("warn-command-newer") + "\"" + "\n");
             writer.write("\n");
             
             writer.write("# Run at the highest priority (MONITOR)" + "\n");
