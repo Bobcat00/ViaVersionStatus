@@ -23,9 +23,8 @@ import java.util.SortedSet;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import us.myles.ViaVersion.api.Via;
-import us.myles.ViaVersion.api.ViaAPI;
-import us.myles.ViaVersion.api.protocol.ProtocolRegistry;
+import com.viaversion.viaversion.api.Via;
+import com.viaversion.viaversion.api.ViaAPI;
 
 public class ViaConnection implements Connection
 {
@@ -61,7 +60,7 @@ public class ViaConnection implements Connection
         if (api != null)
         {
             protocol.id = api.getPlayerVersion(player);
-            protocol.name = us.myles.ViaVersion.api.protocol.ProtocolVersion.getProtocol(protocol.id).getName();
+            protocol.name = com.viaversion.viaversion.api.protocol.version.ProtocolVersion.getProtocol(protocol.id).getName();
         }
         
         return protocol;
@@ -73,8 +72,8 @@ public class ViaConnection implements Connection
     {
         ProtocolVersion protocol = new ProtocolVersion();
         
-        protocol.id = ProtocolRegistry.SERVER_PROTOCOL;
-        protocol.name = us.myles.ViaVersion.api.protocol.ProtocolVersion.getProtocol(protocol.id).getName();
+        protocol.id = api.getServerVersion().highestSupportedVersion();
+        protocol.name = com.viaversion.viaversion.api.protocol.version.ProtocolVersion.getProtocol(protocol.id).getName();
         
         return protocol;
     }
@@ -92,7 +91,7 @@ public class ViaConnection implements Connection
             
             for (Integer id : ids)
             {
-                versions.add(new ProtocolVersion(id, us.myles.ViaVersion.api.protocol.ProtocolVersion.getProtocol(id).getName()));
+                versions.add(new ProtocolVersion(id, com.viaversion.viaversion.api.protocol.version.ProtocolVersion.getProtocol(id).getName()));
             }
         }
         
