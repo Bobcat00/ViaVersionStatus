@@ -11,7 +11,14 @@ permissions:
       viaversionstatus.exempt: true
       viaversionstatus.exempt.log: true
       viaversionstatus.exempt.notify: true
+      viaversionstatus.exempt.notify.message: true
+      viaversionstatus.exempt.notify.command: true
       viaversionstatus.exempt.warn: true
+      viaversionstatus.exempt.warn.message: true
+      viaversionstatus.exempt.warn.command: true
+      viaversionstatus.exempt.warn.newer: true
+      viaversionstatus.exempt.warn.newer.message: true
+      viaversionstatus.exempt.warn.newer.command: true
   viaversionstatus.exempt:
     description: Exempts this player from all processing at join
     default: false
@@ -19,11 +26,32 @@ permissions:
     description: Exempts this player from client version being logged at join
     default: false
   viaversionstatus.exempt.notify:
+    description: Exempts this player from notifying other players at join while also preventing them from triggering the configured join notification command
+    default: false
+  viaversionstatus.exempt.notify.message:
     description: Exempts this player from notifying other players at join
     default: false
+  viaversionstatus.exempt.notify.command:
+    description: Exempts this player from triggering the configured join notification command
+    default: false
   viaversionstatus.exempt.warn:
-    description: Exempts this player from receiving a mismatched version warning
+    description: Exempts this player from receiving an older version warning while also preventing them from triggering the configured older version warning command
+    default: false
+  viaversionstatus.exempt.warn.message:
+    description: Exempts this player from receiving an older version warning
+    default: false
+  viaversionstatus.exempt.warn.command:
+    description: Exempts this player from triggering the configured older version warning command
+    default: false
+  viaversionstatus.exempt.warn.newer:
+    description: Exempts this player from receiving an newer version warning while also preventing them from triggering the configured newer version warning command
+    default: false
+  viaversionstatus.exempt.warn.newer.message:
+    description: Exempts this player from receiving a newer version warning
+    default: false
+  viaversionstatus.exempt.warn.newer.command:
+    description: Exempts this player from triggering the configured newer version warning command
     default: false
   viaversionstatus.notify:
-    description: Display other player client version at join
+    description: Allows this player to receive messages for other players' client versions at join
     default: op

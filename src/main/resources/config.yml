@@ -6,10 +6,15 @@
 notify-string: "&6Player &c%player% &6is using version &c%version%"
 notify-command: ""
 
-# Warn players when they have a mismatched version
+# Warn players when they are using an older version
 warn-players: true
 warn-string: "&cNOTICE: You are running Minecraft version &e%version%\n&cThe recommended version for this server is &a%server%"
 warn-command: ""
+
+# Warn players when they are using a newer version
+warn-players-newer: true
+warn-string-newer: "&cNOTICE: You are running Minecraft version &e%version%\n&cThe recommended version for this server is &a%server%"
+warn-command-newer: ""
 
 # Run at the highest priority (MONITOR)
 # Set to true if %displayname% doesn't work as expected
