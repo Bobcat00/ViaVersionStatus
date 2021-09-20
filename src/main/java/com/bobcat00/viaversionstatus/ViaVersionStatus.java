@@ -107,23 +107,26 @@ public final class ViaVersionStatus extends JavaPlugin
         }
         
         // Metrics
-        int pluginId = 4834;
-        Metrics metrics = new Metrics(this, pluginId);
-        
-        metrics.addCustomChart(new SimplePie("connection_used",    () -> listeners.getConnectionUsed().toString()));
-        metrics.addCustomChart(new SimplePie("listener_priority",  () -> config.getHighPriority()                                     ? "Monitor" : "Normal"));
-        metrics.addCustomChart(new SimplePie("warn_players",       () -> config.getOlderVersionWarnPlayers()                          ? "Yes" : "No"));
-        metrics.addCustomChart(new SimplePie("warn_players_newer", () -> config.getNewerVersionWarnPlayers()                          ? "Yes" : "No"));
-        metrics.addCustomChart(new SimplePie("notify_command",     () -> !config.getNotifyCommand().isEmpty()                         ? "Yes" : "No"));
-        metrics.addCustomChart(new SimplePie("warn_command",       () -> !config.getOlderVersionWarnCommand().isEmpty()               ? "Yes" : "No"));
-        metrics.addCustomChart(new SimplePie("warn_command_newer", () -> !config.getNewerVersionWarnCommand().isEmpty()               ? "Yes" : "No"));
-        metrics.addCustomChart(new SimplePie("prism_integration",  () -> config.getPrismIntegration()                                 ? "Yes" : "No"));
-        metrics.addCustomChart(new SimplePie("viaversion",         () -> Bukkit.getPluginManager().isPluginEnabled("ViaVersion")      ? "Yes" : "No"));
-        metrics.addCustomChart(new SimplePie("viabackwards",       () -> Bukkit.getPluginManager().isPluginEnabled("ViaBackwards")    ? "Yes" : "No"));
-        metrics.addCustomChart(new SimplePie("viarewind",          () -> Bukkit.getPluginManager().isPluginEnabled("ViaRewind")       ? "Yes" : "No"));
-        metrics.addCustomChart(new SimplePie("protocolsupport",    () -> Bukkit.getPluginManager().isPluginEnabled("ProtocolSupport") ? "Yes" : "No"));
-        
-        getLogger().info("You may opt-out of metrics by changing plugins/bStats/config.yml");
+        if (config.getEnableMetrics())
+        {
+            int pluginId = 4834;
+            Metrics metrics = new Metrics(this, pluginId);
+
+            metrics.addCustomChart(new SimplePie("connection_used",    () -> listeners.getConnectionUsed().toString()));
+            metrics.addCustomChart(new SimplePie("listener_priority",  () -> config.getHighPriority()                                     ? "Monitor" : "Normal"));
+            metrics.addCustomChart(new SimplePie("warn_players",       () -> config.getOlderVersionWarnPlayers()                          ? "Yes" : "No"));
+            metrics.addCustomChart(new SimplePie("warn_players_newer", () -> config.getNewerVersionWarnPlayers()                          ? "Yes" : "No"));
+            metrics.addCustomChart(new SimplePie("notify_command",     () -> !config.getNotifyCommand().isEmpty()                         ? "Yes" : "No"));
+            metrics.addCustomChart(new SimplePie("warn_command",       () -> !config.getOlderVersionWarnCommand().isEmpty()               ? "Yes" : "No"));
+            metrics.addCustomChart(new SimplePie("warn_command_newer", () -> !config.getNewerVersionWarnCommand().isEmpty()               ? "Yes" : "No"));
+            metrics.addCustomChart(new SimplePie("prism_integration",  () -> config.getPrismIntegration()                                 ? "Yes" : "No"));
+            metrics.addCustomChart(new SimplePie("viaversion",         () -> Bukkit.getPluginManager().isPluginEnabled("ViaVersion")      ? "Yes" : "No"));
+            metrics.addCustomChart(new SimplePie("viabackwards",       () -> Bukkit.getPluginManager().isPluginEnabled("ViaBackwards")    ? "Yes" : "No"));
+            metrics.addCustomChart(new SimplePie("viarewind",          () -> Bukkit.getPluginManager().isPluginEnabled("ViaRewind")       ? "Yes" : "No"));
+            metrics.addCustomChart(new SimplePie("protocolsupport",    () -> Bukkit.getPluginManager().isPluginEnabled("ProtocolSupport") ? "Yes" : "No"));
+
+            getLogger().info("Metrics enabled if allowed by plugins/bStats/config.yml");
+        }
     }
  
     @Override

@@ -91,6 +91,13 @@ public class Config
         return plugin.getConfig().getBoolean("list-supported-protocols");
     }
     
+    // Metrics
+    
+    public boolean getEnableMetrics()
+    {
+        return plugin.getConfig().getBoolean("enable-metrics");
+    }
+    
     // Prism integration
     
     public boolean getPrismIntegration()
@@ -138,6 +145,11 @@ public class Config
         if (!contains("list-supported-protocols", true))
         {
             plugin.getConfig().set("list-supported-protocols", true);
+        }
+        
+        if (!contains("enable-metrics", true))
+        {
+            plugin.getConfig().set("enable-metrics", true);
         }
         
         if (!contains("prism-integration", true))
@@ -191,6 +203,10 @@ public class Config
             
             writer.write("# At startup, list the protocols supported by ViaVersion" + "\n");
             writer.write("list-supported-protocols: " + plugin.getConfig().getBoolean("list-supported-protocols") + "\n");
+            writer.write("\n");
+            
+            writer.write("# Enable metrics (subject to bStats global config)" + "\n");
+            writer.write("enable-metrics: " + plugin.getConfig().getBoolean("enable-metrics") + "\n");
             writer.write("\n");
             
             writer.write("# Record data via Prism, with the action vvs-client-connect" + "\n");

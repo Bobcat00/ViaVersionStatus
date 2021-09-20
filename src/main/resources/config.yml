@@ -23,5 +23,8 @@ high-priority: false
 # At startup, list the protocols supported by ViaVersion
 list-supported-protocols: true
 
+# Enable metrics (subject to bStats global config)
+enable-metrics: true
+
 # Record data via Prism, with the action vvs-client-connect
 prism-integration: false
