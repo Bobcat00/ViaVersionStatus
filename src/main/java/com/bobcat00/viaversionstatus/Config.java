@@ -122,17 +122,17 @@ public class Config
 
         if (!contains("warn-players-newer", true))
         {
-            plugin.getConfig().set("warn-players-newer", true);
+            plugin.getConfig().set("warn-players-newer", plugin.getConfig().getBoolean("warn-players"));
         }
 
         if (!contains("warn-string-newer", true))
         {
-            plugin.getConfig().set("warn-string-newer", "&cNOTICE: You are running Minecraft version &e%version%\n&cThe recommended version for this server is &a%server%");
+            plugin.getConfig().set("warn-string-newer", plugin.getConfig().getString("warn-string"));
         }
 
         if (!contains("warn-command-newer", true))
         {
-            plugin.getConfig().set("warn-command-newer", "");
+            plugin.getConfig().set("warn-command-newer", plugin.getConfig().getString("warn-command"));
         }
         
         if (!contains("list-supported-protocols", true))
