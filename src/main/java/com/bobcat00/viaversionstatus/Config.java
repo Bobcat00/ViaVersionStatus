@@ -35,6 +35,11 @@ public class Config
     
     // Get the string to be sent to ops
     
+    public boolean getNotifyOps()
+    {
+        return plugin.getConfig().getBoolean("notify-ops");
+    }
+    
     public String getNotifyString()
     {
         return plugin.getConfig().getString("notify-string");
@@ -117,6 +122,11 @@ public class Config
     
     public void updateConfig()
     {
+        if (!contains("notify-ops", true))
+        {
+            plugin.getConfig().set("notify-ops", true);
+        }
+        
         if (!contains("notify-command", true))
         {
             plugin.getConfig().set("notify-command", "");
@@ -179,7 +189,8 @@ public class Config
             writer.write("# \\n can be used as a line break" + "\n");
             writer.write("\n");
             
-            writer.write("# The string to send to ops when a player joins" + "\n");
+            writer.write("# Notify ops when a player joins" + "\n");
+            writer.write("notify-ops: " + plugin.getConfig().getBoolean("notify-ops") + "\n");
             writer.write("notify-string: \"" + plugin.getConfig().getString("notify-string").replaceAll("\n", "\\\\n") + "\"" + "\n");
             writer.write("notify-command: \"" + plugin.getConfig().getString("notify-command") + "\"" + "\n");
             writer.write("\n");

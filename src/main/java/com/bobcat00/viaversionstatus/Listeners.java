@@ -232,7 +232,8 @@ public final class Listeners implements Listener
         // 2. Notify any player with the viaversionstatus.notify permission (ops by default),
         //    unless the player logging in has an exempt permission
 
-        if (!player.hasPermission("viaversionstatus.exempt.notify"))
+        if (plugin.config.getNotifyOps() &&
+            !player.hasPermission("viaversionstatus.exempt.notify"))
         {
             if (!player.hasPermission("viaversionstatus.exempt.notify.message"))
             {

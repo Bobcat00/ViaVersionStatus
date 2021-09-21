@@ -2,7 +2,8 @@
 # Supported variables are %player%, %displayname%, %version%, and %server%
 # \n can be used as a line break
 
-# The string to send to ops when a player joins
+# Notify ops when a player joins
+notify-ops: true
 notify-string: "&6Player &c%player% &6is using version &c%version%"
 notify-command: ""
 
