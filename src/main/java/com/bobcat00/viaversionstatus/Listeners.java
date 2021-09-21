@@ -68,13 +68,12 @@ public final class Listeners implements Listener
         {
             // Use MONITOR if true
             priority = EventPriority.MONITOR;
+            plugin.getLogger().info("Using listener priority " + priority.toString() + ".");
         }
         
         plugin.getServer().getPluginManager().registerEvent(PlayerJoinEvent.class, this, priority,
             new EventExecutor() { public void execute(Listener l, Event e) { onPlayerJoin((PlayerJoinEvent)e); }},
             plugin);
-        
-        plugin.getLogger().info("Using listener priority " + priority.toString() + ".");
         
         // Determine which connection(s) to use
         
