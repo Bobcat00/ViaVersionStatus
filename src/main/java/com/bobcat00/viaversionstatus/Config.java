@@ -96,6 +96,13 @@ public class Config
         return plugin.getConfig().getBoolean("list-supported-protocols");
     }
     
+    // Block no light data warnings
+    
+    public boolean getBlockNoLightDataWarnings()
+    {
+        return plugin.getConfig().getBoolean("block-no-light-data-warnings");
+    }
+    
     // Metrics
     
     public boolean getEnableMetrics()
@@ -157,6 +164,11 @@ public class Config
             plugin.getConfig().set("list-supported-protocols", true);
         }
         
+        if (!contains("block-no-light-data-warnings", true))
+        {
+            plugin.getConfig().set("block-no-light-data-warnings", false);
+        }
+        
         if (!contains("enable-metrics", true))
         {
             plugin.getConfig().set("enable-metrics", true);
@@ -214,6 +226,10 @@ public class Config
             
             writer.write("# At startup, list the protocols supported by ViaVersion" + "\n");
             writer.write("list-supported-protocols: " + plugin.getConfig().getBoolean("list-supported-protocols") + "\n");
+            writer.write("\n");
+            
+            writer.write("# Block \"No light data found for chunk\" warning messages" + "\n");
+            writer.write("block-no-light-data-warnings: " + plugin.getConfig().getBoolean("block-no-light-data-warnings") + "\n");
             writer.write("\n");
             
             writer.write("# Enable metrics (subject to bStats global config)" + "\n");

@@ -24,6 +24,9 @@ high-priority: false
 # At startup, list the protocols supported by ViaVersion
 list-supported-protocols: true
 
+# Block "No light data found for chunk" warning messages
+block-no-light-data-warnings: false
+
 # Enable metrics (subject to bStats global config)
 enable-metrics: true
 
