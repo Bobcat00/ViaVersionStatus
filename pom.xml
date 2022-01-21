@@ -94,7 +94,7 @@
     <dependency>
       <groupId>com.github.ProtocolSupport</groupId>
       <artifactId>ProtocolSupport</artifactId>
-      <version>master-ce24924c0e-1</version>
+      <version>aedf2f266c</version>
       <scope>provided</scope>
     </dependency>
     <!--  Prism -->
