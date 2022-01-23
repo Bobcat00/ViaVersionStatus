@@ -19,7 +19,7 @@ package com.bobcat00.viaversionstatus;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import me.botsko.prism.events.PrismCustomPlayerActionEvent;
+import network.darkhelmet.prism.events.PrismCustomPlayerActionEvent;
 
 public class PrismEvent implements PrismEventInterface
 {

@@ -16,7 +16,7 @@
 
 package com.bobcat00.viaversionstatus;
 
-import me.botsko.prism.actions.GenericAction;
+import network.darkhelmet.prism.actions.GenericAction;
 
 public class PrismPlayerAction extends GenericAction
 {

@@ -67,15 +67,6 @@
       <id>jitpack.io</id>
       <url>https://jitpack.io</url>
     </repository>
-    <!--  Prism -->
-    <repository>
-      <id>maven.addstar.com.au-snapshots</id>
-      <name>addstar-maven-snapshots</name>
-      <url>https://maven.addstar.com.au/artifactory/all-snapshot</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
   </repositories>
   <dependencies>
     <dependency>
@@ -95,13 +86,6 @@
       <groupId>com.github.ProtocolSupport</groupId>
       <artifactId>ProtocolSupport</artifactId>
       <version>aedf2f266c</version>
-      <scope>provided</scope>
-    </dependency>
-    <!--  Prism -->
-    <dependency>
-      <groupId>me.botsko</groupId>
-      <artifactId>Prism</artifactId>
-      <version>2.1.8-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
     <!--  bStats -->

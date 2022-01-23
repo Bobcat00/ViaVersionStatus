@@ -271,7 +271,7 @@ public final class Listeners implements Listener
                     }
                     catch (CommandException exc)
                     {
-                        plugin.getLogger().info("Command returned exception: " + exc.getMessage());
+                        plugin.getLogger().warning("Command returned exception: " + exc.getMessage());
                     }
                 }
             }
@@ -363,7 +363,7 @@ public final class Listeners implements Listener
             }
             catch (CommandException exc)
             {
-                plugin.getLogger().info("Command returned exception: " + exc.getMessage());
+                plugin.getLogger().warning("Command returned exception: " + exc.getMessage());
             }
         }
     }

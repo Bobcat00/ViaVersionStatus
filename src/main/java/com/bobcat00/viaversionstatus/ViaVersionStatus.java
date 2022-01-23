@@ -23,9 +23,9 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import me.botsko.prism.Prism;
-import me.botsko.prism.actionlibs.ActionTypeImpl;
-import me.botsko.prism.exceptions.InvalidActionException;
+import network.darkhelmet.prism.Prism;
+import network.darkhelmet.prism.actionlibs.ActionTypeImpl;
+import network.darkhelmet.prism.exceptions.InvalidActionException;
 
 public final class ViaVersionStatus extends JavaPlugin
 {
@@ -33,6 +33,7 @@ public final class ViaVersionStatus extends JavaPlugin
     Config config;
     Listeners listeners;
     Prism prism;
+    String prismVersion = "unknown";
     PrismEvent prismEvent; // Used to send event to Prism
     boolean prismHooked = false;
     int prismCounter = 0;
@@ -53,56 +54,64 @@ public final class ViaVersionStatus extends JavaPlugin
             Plugin prismPlugin = Bukkit.getPluginManager().getPlugin("Prism");
             if (prismPlugin != null && prismPlugin.isEnabled())
             {
-                prism = (Prism) prismPlugin;
-                
-                // Register our custom event. We have to wait until Prism is fully up and running.
-                // We do this by waiting for PurgeManager to be set.
-                
-                new BukkitRunnable()
+                try
                 {
-                    @Override
-                    public void run()
+                    prism = (Prism) prismPlugin;
+                    prismVersion = prism.getDescription().getVersion();
+
+                    // Register our custom event. We have to wait until Prism is fully up and running.
+                    // We do this by waiting for PurgeManager to be set.
+
+                    new BukkitRunnable()
                     {
-                        if (prism.getPurgeManager() != null)
+                        @Override
+                        public void run()
                         {
-                            try
+                            if (prism.getPurgeManager() != null)
                             {
-                                // Register the custom event
-                                ActionTypeImpl actionType = new ActionTypeImpl("vvs-client-connect", PrismPlayerAction.class, "client version");
-                                Prism.getActionRegistry().registerCustomAction(plugin, actionType);
-                                prismEvent = new PrismEvent();
-                                prismHooked = true;
-                                getLogger().info("Hooked into Prism.");
-                                this.cancel();
+                                try
+                                {
+                                    // Register the custom event
+                                    ActionTypeImpl actionType = new ActionTypeImpl("vvs-client-connect", PrismPlayerAction.class, "client version");
+                                    Prism.getActionRegistry().registerCustomAction(plugin, actionType);
+                                    prismEvent = new PrismEvent();
+                                    prismHooked = true;
+                                    getLogger().info("Hooked into Prism version " + prismVersion);
+                                    this.cancel();
+                                }
+                                catch (InvalidActionException e)
+                                {
+                                    // Exception thrown by Prism
+                                    getLogger().warning("Unable to hook into Prism: ");
+                                    getLogger().warning(e.getMessage());
+                                    getLogger().warning("Check Prism's config to ensure that tracking.api is true");
+                                    getLogger().warning("and ViaVersionStatus is in the allowed-plugins list.");
+                                    this.cancel(); // only try once
+                                }
                             }
-                            catch (InvalidActionException e)
+                            else
                             {
-                                // Exception thrown by Prism
-                                getLogger().info("Unable to hook into Prism:");
-                                getLogger().info(e.getMessage());
-                                getLogger().info("Check Prism's config to ensure that tracking.api is true");
-                                getLogger().info("and ViaVersionStatus is in the allowed-plugins list.");
-                                this.cancel(); // only try once
+                                ++prismCounter;
+                                // Cancel if we tried 50 times
+                                if (prismCounter >= 50)
+                                {
+                                    getLogger().warning("Unable to hook into Prism. Check if Prism is working.");
+                                    this.cancel();
+                                }
                             }
                         }
-                        else
-                        {
-                            ++prismCounter;
-                            // Cancel if we tried 50 times
-                            if (prismCounter >= 50)
-                            {
-                                getLogger().info("Unable to hook into Prism. Check if Prism is working.");
-                                this.cancel();
-                            }
-                        }
-                    }
-                }.runTaskTimer(this,
-                               1L,  // delay 1 tick
-                               4L); // period 200 msec
+                    }.runTaskTimer(this,
+                            1L,  // delay 1 tick
+                            4L); // period 200 msec
+                }
+                catch (NoClassDefFoundError e)
+                {
+                    getLogger().warning("Unable to hook into Prism. Make sure you are using Prism version 3.x or later.");
+                }
             }
             else
             {
-                getLogger().info("prism-integration is true but Prism is not present or not enabled.");
+                getLogger().warning("prism-integration is true but Prism is not present or not enabled.");
             }
         }
         
@@ -125,7 +134,7 @@ public final class ViaVersionStatus extends JavaPlugin
             metrics.addCustomChart(new SimplePie("warn_command_newer", () -> config.getNewerVersionWarnPlayers() && !config.getNewerVersionWarnCommand().isEmpty() ? "Yes" : "No"));
             metrics.addCustomChart(new SimplePie("listener_priority",  () -> config.getHighPriority()                                                              ? "Monitor" : "Normal"));
             metrics.addCustomChart(new SimplePie("list_protocols",     () -> config.getListSupportedProtocols()                                                    ? "Yes" : "No"));
-            metrics.addCustomChart(new SimplePie("prism_integration",  () -> config.getPrismIntegration()                                                          ? "Yes" : "No"));
+            metrics.addCustomChart(new SimplePie("prism_integration",  () -> config.getPrismIntegration()                                                          ? prismVersion : "No"));
             
             getLogger().info("Metrics enabled if allowed by plugins/bStats/config.yml");
         }
