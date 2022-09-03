@@ -142,6 +142,7 @@ public final class ViaVersionStatus extends JavaPlugin
             metrics.addCustomChart(new SimplePie("warn_command_newer", () -> config.getNewerVersionWarnPlayers() && !config.getNewerVersionWarnCommand().isEmpty() ? "Yes" : "No"));
             metrics.addCustomChart(new SimplePie("listener_priority",  () -> config.getHighPriority()                                                              ? "Monitor" : "Normal"));
             metrics.addCustomChart(new SimplePie("list_protocols",     () -> config.getListSupportedProtocols()                                                    ? "Yes" : "No"));
+            metrics.addCustomChart(new SimplePie("block_no_light",     () -> config.getBlockNoLightDataWarnings()                                                  ? "Yes" : "No"));
             metrics.addCustomChart(new SimplePie("prism_integration",  () -> config.getPrismIntegration()                                                          ? prismVersion : "No"));
             
             getLogger().info("Metrics enabled if allowed by plugins/bStats/config.yml");
