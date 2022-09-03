@@ -196,14 +196,11 @@ public final class Listeners implements Listener
             
         case USE_BOTH:
             serverProtocol = via.getServerProtocol(); // Get server info from ViaVersion
+            clientProtocol = ps.getProtocol(player); // Start with PS client protocol
 
-            // If PS ID < server ID, use PS; else use Via
-            if (ps.getProtocol(player).getId() < serverProtocol.getId())
-            {
-                // Use PS
-                clientProtocol = ps.getProtocol(player);
-            }
-            else
+            // If PS ID <= 0 or PS ID >= server ID, use Via instead
+            if ((clientProtocol.getId() <= 0) ||
+                (clientProtocol.getId() >= serverProtocol.getId()))
             {
                 // Use Via
                 clientProtocol = via.getProtocol(player);
