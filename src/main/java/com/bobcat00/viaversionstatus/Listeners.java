@@ -16,6 +16,8 @@
 
 package com.bobcat00.viaversionstatus;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -49,6 +51,9 @@ public final class Listeners implements Listener
     }
     
     private UseConnection useConnection = UseConnection.USE_NONE;
+    
+    // List of pre-1.7 protocol IDs which may be returned by ProtocolSupport
+    private final List<Integer> oldProtocolIds = new ArrayList<>(Arrays.asList(51, 60, 61, 73, 74, 78));
     
     // Variables for outputting supported protocols at startup
     private boolean outputVia = false;
@@ -198,9 +203,9 @@ public final class Listeners implements Listener
             serverProtocol = via.getServerProtocol(); // Get server info from ViaVersion
             clientProtocol = ps.getProtocol(player); // Start with PS client protocol
 
-            // If PS ID <= 0 or PS ID >= server ID, use Via instead
+            // If PS ID <= 0 or PS ID >= server ID and not in the old protocol ID list, use Via instead
             if ((clientProtocol.getId() <= 0) ||
-                (clientProtocol.getId() >= serverProtocol.getId()))
+                ((clientProtocol.getId() >= serverProtocol.getId()) && (!oldProtocolIds.contains(clientProtocol.getId()))))
             {
                 // Use Via
                 clientProtocol = via.getProtocol(player);
