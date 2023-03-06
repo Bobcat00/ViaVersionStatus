@@ -53,7 +53,7 @@ public final class Listeners implements Listener
     private UseConnection useConnection = UseConnection.USE_NONE;
     
     // List of pre-1.7 protocol IDs which may be returned by ProtocolSupport
-    private final List<Integer> oldProtocolIds = new ArrayList<>(Arrays.asList(51, 60, 61, 73, 74, 78));
+    public List<Integer> oldProtocolIds = new ArrayList<>(Arrays.asList(3, 48, 49, 51, 60, 61, 73, 74, 77, 78, 90, 91, 92));
     
     // Variables for outputting supported protocols at startup
     private boolean outputVia = false;
