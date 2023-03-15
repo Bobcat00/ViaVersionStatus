@@ -38,6 +38,7 @@ public final class ViaVersionStatus extends JavaPlugin
     String prismVersion = "unknown";
     PrismEvent prismEvent; // Used to send event to Prism
     boolean prismHooked = false;
+    boolean prismReady = false;
     int prismCounter = 0;
     
     @Override
@@ -75,7 +76,7 @@ public final class ViaVersionStatus extends JavaPlugin
                         @Override
                         public void run()
                         {
-                            if (prism.getPurgeManager() != null)
+                            if (prismReady)
                             {
                                 try
                                 {
@@ -99,6 +100,11 @@ public final class ViaVersionStatus extends JavaPlugin
                             }
                             else
                             {
+                                if (prism.getPurgeManager() != null)
+                                {
+                                    // Wait until next invocation to hook into Prism
+                                    prismReady = true;
+                                }
                                 ++prismCounter;
                                 // Cancel if we tried 50 times
                                 if (prismCounter >= 50)
