@@ -59,7 +59,7 @@ public class ViaConnection implements Connection
         
         if (api != null)
         {
-            protocol.id = api.getPlayerVersion(player);
+            protocol.id = api.getPlayerProtocolVersion(player).getVersion();
             protocol.name = com.viaversion.viaversion.api.protocol.version.ProtocolVersion.getProtocol(protocol.id).getName();
         }
         
@@ -72,13 +72,16 @@ public class ViaConnection implements Connection
     {
         ProtocolVersion protocol = new ProtocolVersion();
         
-        protocol.id = api.getServerVersion().highestSupportedVersion();
-        protocol.name = com.viaversion.viaversion.api.protocol.version.ProtocolVersion.getProtocol(protocol.id).getName();
+        if (api != null)
+        {
+            protocol.id = api.getServerVersion().highestSupportedProtocolVersion().getVersion();
+            protocol.name = com.viaversion.viaversion.api.protocol.version.ProtocolVersion.getProtocol(protocol.id).getName();
+        }
         
         return protocol;
     }
     
-    // getSupportedProtocols();
+    // getSupportedProtocols
     
     public List<ProtocolVersion> getSupportedProtocols()
     {
@@ -87,11 +90,12 @@ public class ViaConnection implements Connection
         if (api != null)
         {
             @SuppressWarnings("unchecked")
-            SortedSet<Integer> ids = api.getSupportedVersions();
+            SortedSet<com.viaversion.viaversion.api.protocol.version.ProtocolVersion> protocols = api.getSupportedProtocolVersions();
             
-            for (Integer id : ids)
+            for (com.viaversion.viaversion.api.protocol.version.ProtocolVersion protocol : protocols)
             {
-                versions.add(new ProtocolVersion(id, com.viaversion.viaversion.api.protocol.version.ProtocolVersion.getProtocol(id).getName()));
+                versions.add(new ProtocolVersion(protocol.getVersion(),
+                                                 com.viaversion.viaversion.api.protocol.version.ProtocolVersion.getProtocol(protocol.getVersion()).getName()));
             }
         }
         

@@ -16,8 +16,6 @@
 
 package com.bobcat00.viaversionstatus;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -32,7 +30,6 @@ import org.bukkit.plugin.EventExecutor;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.bobcat00.viaversionstatus.connections.ProtocolVersion;
-import com.bobcat00.viaversionstatus.connections.PSConnection;
 import com.bobcat00.viaversionstatus.connections.ViaConnection;
 
 public final class Listeners implements Listener
@@ -40,24 +37,17 @@ public final class Listeners implements Listener
     private ViaVersionStatus plugin;
     
     private ViaConnection via;
-    private PSConnection ps;
     
     public enum UseConnection
     {
         USE_VIA,
-        USE_PS,
-        USE_BOTH,
         USE_NONE
     }
     
     private UseConnection useConnection = UseConnection.USE_NONE;
     
-    // List of pre-1.7 protocol IDs which may be returned by ProtocolSupport
-    private final List<Integer> oldProtocolIds = new ArrayList<>(Arrays.asList(51, 60, 61, 73, 74, 78));
-    
     // Variables for outputting supported protocols at startup
     private boolean outputVia = false;
-    private boolean outputPs = false;
     private int protocolListCounter = 0;
     
     // Constructor
@@ -83,35 +73,21 @@ public final class Listeners implements Listener
         // Determine which connection(s) to use
         
         via = new ViaConnection();
-        ps = new PSConnection();
         
-        if (via.isValid() && ps.isValid())
-        {
-            useConnection = UseConnection.USE_BOTH;
-            outputVia = true;
-            outputPs = true;
-            plugin.getLogger().info("Using both ViaVersion and ProtocolSupport to determine versions.");
-        }
-        else if (via.isValid())
+        if (via.isValid())
         {
             useConnection = UseConnection.USE_VIA;
             outputVia = true;
-            plugin.getLogger().info("Using ViaVersion to determine versions.");
-        }
-        else if (ps.isValid())
-        {
-            useConnection = UseConnection.USE_PS;
-            outputPs = true;
-            plugin.getLogger().info("Using ProtocolSupport to determine versions.");
+            //plugin.getLogger().info("Using ViaVersion to determine versions.");
         }
         else
         {
-            plugin.getLogger().severe("This plugin requires either ViaVersion or ProtocolSupport or both.");
+            plugin.getLogger().severe("This plugin requires ViaVersion.");
             plugin.shutdown();
-            throw new RuntimeException("ViaVersion or ProtocolSupport required."); // Get the user's attention
+            throw new RuntimeException("ViaVersion required."); // Get the user's attention
         }
         
-        // Output supported protocols after giving ViaVersion/ProtocolSupport time to populate them
+        // Output supported protocols after giving ViaVersion time to populate them
         
         if (plugin.config.getListSupportedProtocols())
         {
@@ -136,25 +112,9 @@ public final class Listeners implements Listener
                         }
                     }
                     
-                    if (outputPs)
-                    {
-                        List<ProtocolVersion> protocols = ps.getSupportedProtocols();
-
-                        if ((protocols != null) && (!protocols.isEmpty()))
-                        {
-                            plugin.getLogger().info("ProtocolSupport supported protocols:");
-                            for(ProtocolVersion protocol : protocols)
-                            {
-                                plugin.getLogger().info(protocol.toString());
-                            }
-                            // Indicate done
-                            outputPs = false;
-                        }
-                    }
-
                     ++protocolListCounter;
                     // Cancel if nothing more is to be done or if we tried 10 times
-                    if ((!outputVia && !outputPs) || protocolListCounter >= 10)
+                    if (!outputVia || protocolListCounter >= 10)
                     {
                         this.cancel();
                     }
@@ -192,24 +152,6 @@ public final class Listeners implements Listener
         case USE_VIA:
             serverProtocol = via.getServerProtocol();
             clientProtocol = via.getProtocol(player);
-            break;
-            
-        case USE_PS:
-            serverProtocol = ps.getServerProtocol();
-            clientProtocol = ps.getProtocol(player);
-            break;
-            
-        case USE_BOTH:
-            serverProtocol = via.getServerProtocol(); // Get server info from ViaVersion
-            clientProtocol = ps.getProtocol(player); // Start with PS client protocol
-
-            // If PS ID <= 0 or PS ID >= server ID and not in the old protocol ID list, use Via instead
-            if ((clientProtocol.getId() <= 0) ||
-                ((clientProtocol.getId() >= serverProtocol.getId()) && (!oldProtocolIds.contains(clientProtocol.getId()))))
-            {
-                // Use Via
-                clientProtocol = via.getProtocol(player);
-            }
             break;
             
         case USE_NONE:

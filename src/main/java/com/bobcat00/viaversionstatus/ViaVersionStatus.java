@@ -139,7 +139,6 @@ public final class ViaVersionStatus extends JavaPlugin
             metrics.addCustomChart(new SimplePie("viaversion",         () -> Bukkit.getPluginManager().isPluginEnabled("ViaVersion")                               ? "Yes" : "No"));
             metrics.addCustomChart(new SimplePie("viabackwards",       () -> Bukkit.getPluginManager().isPluginEnabled("ViaBackwards")                             ? "Yes" : "No"));
             metrics.addCustomChart(new SimplePie("viarewind",          () -> Bukkit.getPluginManager().isPluginEnabled("ViaRewind")                                ? "Yes" : "No"));
-            metrics.addCustomChart(new SimplePie("protocolsupport",    () -> Bukkit.getPluginManager().isPluginEnabled("ProtocolSupport")                          ? "Yes" : "No"));
             metrics.addCustomChart(new SimplePie("notify_ops",         () -> config.getNotifyOps()               && !config.getNotifyString().isEmpty()            ? "Yes" : "No"));
             metrics.addCustomChart(new SimplePie("notify_command",     () -> config.getNotifyOps()               && !config.getNotifyCommand().isEmpty()           ? "Yes" : "No"));
             metrics.addCustomChart(new SimplePie("warn_players",       () -> config.getOlderVersionWarnPlayers() && !config.getOlderVersionWarnString().isEmpty()  ? "Yes" : "No"));
