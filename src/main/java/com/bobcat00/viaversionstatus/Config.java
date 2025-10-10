@@ -196,47 +196,47 @@ public class Config
             
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outFile.getAbsolutePath()), Charset.forName("UTF-8")));
             
-            writer.write("# Strings should be enclosed in double quotes: \"...\"" + "\n");
-            writer.write("# Supported variables are %player%, %displayname%, %version%, and %server%" + "\n");
-            writer.write("# \\n can be used as a line break" + "\n");
+            writer.write("# Strings must be enclosed in double quotes: \"...\"" + "\n");
+            writer.write("# Supported placeholders: %player%, %displayname%, %version%, %server%" + "\n");
+            writer.write("# Use \\n to insert a line break" + "\n");
             writer.write("\n");
             
-            writer.write("# Notify ops when a player joins" + "\n");
+            writer.write("# Notify server operators when a player joins." + "\n");
             writer.write("notify-ops: " + plugin.getConfig().getBoolean("notify-ops") + "\n");
             writer.write("notify-string: \"" + plugin.getConfig().getString("notify-string").replaceAll("\n", "\\\\n") + "\"" + "\n");
             writer.write("notify-command: \"" + plugin.getConfig().getString("notify-command") + "\"" + "\n");
             writer.write("\n");
             
-            writer.write("# Warn players when they are using an older version" + "\n");
+            writer.write("# Warn players if they are using an older client version." + "\n");
             writer.write("warn-players: " + plugin.getConfig().getBoolean("warn-players") + "\n");
             writer.write("warn-string: \"" + plugin.getConfig().getString("warn-string").replaceAll("\n", "\\\\n") + "\"" + "\n");
             writer.write("warn-command: \"" + plugin.getConfig().getString("warn-command") + "\"" + "\n");
             writer.write("\n");
 
-            writer.write("# Warn players when they are using a newer version" + "\n");
+            writer.write("# Warn players if they are using a newer client version." + "\n");
             writer.write("warn-players-newer: " + plugin.getConfig().getBoolean("warn-players-newer") + "\n");
             writer.write("warn-string-newer: \"" + plugin.getConfig().getString("warn-string-newer").replaceAll("\n", "\\\\n") + "\"" + "\n");
             writer.write("warn-command-newer: \"" + plugin.getConfig().getString("warn-command-newer") + "\"" + "\n");
             writer.write("\n");
             
-            writer.write("# Run at the highest priority (MONITOR)" + "\n");
-            writer.write("# Set to true if %displayname% doesn't work as expected" + "\n");
+            writer.write("# Run at the highest priority (MONITOR)." + "\n");
+            writer.write("# Set this to true if %displayname% is not displayed correctly." + "\n");
             writer.write("high-priority: " + plugin.getConfig().getBoolean("high-priority") + "\n");
             writer.write("\n");
             
-            writer.write("# At startup, list the protocols supported by ViaVersion" + "\n");
+            writer.write("# At startup, list all protocols supported by ViaVersion." + "\n");
             writer.write("list-supported-protocols: " + plugin.getConfig().getBoolean("list-supported-protocols") + "\n");
             writer.write("\n");
             
-            writer.write("# Block \"No light data found for chunk\" warning messages" + "\n");
+            writer.write("# Suppress \"No light data found for chunk\" warning messages." + "\n");
             writer.write("block-no-light-data-warnings: " + plugin.getConfig().getBoolean("block-no-light-data-warnings") + "\n");
             writer.write("\n");
             
-            writer.write("# Enable metrics (subject to bStats global config)" + "\n");
+            writer.write("# Enable metrics collection (subject to the global bStats configuration)." + "\n");
             writer.write("enable-metrics: " + plugin.getConfig().getBoolean("enable-metrics") + "\n");
             writer.write("\n");
             
-            writer.write("# Record data via Prism, with the action vvs-client-connect" + "\n");
+            writer.write("# Record data via Prism using the action \"vvs-client-connect\"." + "\n");
             writer.write("prism-integration: " + plugin.getConfig().getBoolean("prism-integration") + "\n");
 
             writer.close();
