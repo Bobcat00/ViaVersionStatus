@@ -17,15 +17,22 @@
 package com.bobcat00.viaversionstatus;
 
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-
-import network.darkhelmet.prism.events.PrismCustomPlayerActionEvent;
+import org.prism_mc.prism.api.actions.types.ActionType;
+import org.prism_mc.prism.paper.api.PrismPaperApi;
+import org.prism_mc.prism.paper.api.activities.PaperActivity;
 
 public class PrismEvent implements PrismEventInterface
 {
-    public void callPrismEvent(Plugin plugin, String actionTypeName, Player player, String message)
+    public void callPrismEvent(PrismPaperApi prism, ActionType actionType, Player player, String message)
     {
-        PrismCustomPlayerActionEvent prismEvent = new PrismCustomPlayerActionEvent(plugin, actionTypeName, player, message);
-        plugin.getServer().getPluginManager().callEvent(prismEvent);
+        var action = prism.actionFactory().createGenericAction(actionType, message);
+        
+        var activity = PaperActivity.builder()
+            .action(action)
+            .location(player.getLocation())
+            .cause(player)
+            .build();
+        
+        prism.recordingService().addToQueue(activity);
     }
 }

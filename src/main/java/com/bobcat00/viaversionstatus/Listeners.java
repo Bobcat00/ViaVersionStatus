@@ -257,7 +257,7 @@ public final class Listeners implements Listener
         
         if (plugin.prismHooked)
         {
-            plugin.prismEvent.callPrismEvent(plugin, "vvs-client-connect", player, clientProtocol.toString());
+            plugin.prismEvent.callPrismEvent(plugin.prism, plugin.vvsConnect, player, clientProtocol.toString());
         }
 
     }

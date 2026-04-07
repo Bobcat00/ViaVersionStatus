@@ -22,24 +22,21 @@ import org.bstats.bukkit.Metrics;
 import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
-
-import network.darkhelmet.prism.Prism;
-import network.darkhelmet.prism.actionlibs.ActionTypeImpl;
-import network.darkhelmet.prism.exceptions.InvalidActionException;
+import org.prism_mc.prism.api.actions.types.ActionType;
+import org.prism_mc.prism.paper.api.PrismPaperApi;
 
 public final class ViaVersionStatus extends JavaPlugin
 {
     ViaVersionStatus plugin = this;
     Config config;
     Listeners listeners;
-    Prism prism;
+    PrismPaperApi prism;
     String prismVersion = "unknown";
+    ActionType vvsConnect;
     PrismEvent prismEvent; // Used to send event to Prism
     boolean prismHooked = false;
-    boolean prismReady = false;
-    int prismCounter = 0;
     
     @Override
     public void onEnable()
@@ -60,67 +57,29 @@ public final class ViaVersionStatus extends JavaPlugin
         // Prism
         if (config.getPrismIntegration())
         {
-            Plugin prismPlugin = Bukkit.getPluginManager().getPlugin("Prism");
+        	Plugin prismPlugin = Bukkit.getPluginManager().getPlugin("prism");
+        	
             if (prismPlugin != null && prismPlugin.isEnabled())
             {
                 try
                 {
-                    prism = (Prism) prismPlugin;
-                    prismVersion = prism.getDescription().getVersion();
+                	RegisteredServiceProvider<PrismPaperApi> prismProvider = Bukkit.getServicesManager().getRegistration(PrismPaperApi.class);
+                	if (prismProvider != null)
+                	{
+                		prism = prismProvider.getProvider();
+                		prismVersion = prismPlugin.getDescription().getVersion();
 
-                    // Register our custom event. We have to wait until Prism is fully up and running.
-                    // We do this by waiting for PurgeManager to be set.
-
-                    new BukkitRunnable()
-                    {
-                        @Override
-                        public void run()
-                        {
-                            if (prismReady)
-                            {
-                                try
-                                {
-                                    // Register the custom event
-                                    ActionTypeImpl actionType = new ActionTypeImpl("vvs-client-connect", PrismPlayerAction.class, "client version");
-                                    Prism.getActionRegistry().registerCustomAction(plugin, actionType);
-                                    prismEvent = new PrismEvent();
-                                    prismHooked = true;
-                                    getLogger().info("Hooked into Prism version " + prismVersion);
-                                    this.cancel();
-                                }
-                                catch (InvalidActionException e)
-                                {
-                                    // Exception thrown by Prism
-                                    getLogger().warning("Unable to hook into Prism: ");
-                                    getLogger().warning(e.getMessage());
-                                    getLogger().warning("Check Prism's config to ensure that tracking.api is true");
-                                    getLogger().warning("and ViaVersionStatus is in the allowed-plugins list.");
-                                    this.cancel(); // only try once
-                                }
-                            }
-                            else
-                            {
-                                if (prism.getPurgeManager() != null)
-                                {
-                                    // Wait until next invocation to hook into Prism
-                                    prismReady = true;
-                                }
-                                ++prismCounter;
-                                // Cancel if we tried 50 times
-                                if (prismCounter >= 50)
-                                {
-                                    getLogger().warning("Unable to hook into Prism. Check if Prism is working.");
-                                    this.cancel();
-                                }
-                            }
-                        }
-                    }.runTaskTimer(this,
-                            1L,  // delay 1 tick
-                            4L); // period 200 msec
+                		// Register the custom event
+                		vvsConnect = prism.actionTypeRegistry().registerGenericAction("vvs-connect");
+                		prismEvent = new PrismEvent();
+                		prismHooked = true;
+                		getLogger().info("Hooked into Prism version " + prismVersion);
+                	}
                 }
-                catch (NoClassDefFoundError e)
+                catch (Exception exc)
                 {
-                    getLogger().warning("Unable to hook into Prism. Make sure you are using Prism version 3.x or later.");
+                    getLogger().warning("Unable to hook into Prism. Make sure you are using Prism version 4.4 or later.");
+                    getLogger().warning(exc.getMessage());
                 }
             }
             else

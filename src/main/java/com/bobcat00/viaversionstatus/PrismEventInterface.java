@@ -17,9 +17,10 @@
 package com.bobcat00.viaversionstatus;
 
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
+import org.prism_mc.prism.api.actions.types.ActionType;
+import org.prism_mc.prism.paper.api.PrismPaperApi;
 
 public interface PrismEventInterface
 {
-    public void callPrismEvent(Plugin plugin, String actionTypeName, Player player, String message);
+    public void callPrismEvent(PrismPaperApi prism, ActionType actionType, Player player, String message);
 }
