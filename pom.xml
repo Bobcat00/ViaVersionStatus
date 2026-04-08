@@ -102,19 +102,6 @@
       <version>4.3-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
-    <!--  log4j -->
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-api</artifactId>
-      <version>2.20.0</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-core</artifactId>
-      <version>2.20.0</version>
-      <scope>provided</scope>
-    </dependency>
     <!--  bStats -->
     <dependency>
       <groupId>org.bstats</groupId>
