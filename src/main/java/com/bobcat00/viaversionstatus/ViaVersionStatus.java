@@ -62,7 +62,7 @@ public final class ViaVersionStatus extends JavaPlugin
                 		prismVersion = prismPlugin.getDescription().getVersion();
 
                 		// Register the custom event
-                		vvsConnect = prism.actionTypeRegistry().registerGenericAction("vvs-connect");
+                		vvsConnect = prism.actionTypeRegistry().registerGenericAction("vvs-connect", config.getPrismActionString());
                 		prismEvent = new PrismEvent();
                 		prismHooked = true;
                 		getLogger().info("Hooked into Prism version " + prismVersion);

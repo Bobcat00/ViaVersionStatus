@@ -78,7 +78,7 @@
       <url>https://repo.viaversion.com/</url>
     </repository>
     <repository>
-      <id>darkhelmet</id>
+      <id>prism-snapshots</id>
       <url>https://nexus.prism-mc.org/repository/maven-snapshots/</url>
     </repository>
   </repositories>

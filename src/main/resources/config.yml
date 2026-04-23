@@ -27,5 +27,6 @@ list-supported-protocols: true
 # Enable metrics (subject to bStats global config)
 enable-metrics: true
 
-# Record data via Prism, with the action vvs-client-connect
+# Record data via Prism, with the action vvs-connect
 prism-integration: false
+prism-action-string: "client version"

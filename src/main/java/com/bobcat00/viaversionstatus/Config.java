@@ -110,6 +110,11 @@ public class Config
         return plugin.getConfig().getBoolean("prism-integration");
     }
     
+    public String getPrismActionString()
+    {
+    	return plugin.getConfig().getString("prism-action-string");
+    }
+    
     //--------------------------------------------------------------------------
     
     // Update the config file with new fields.
@@ -167,6 +172,11 @@ public class Config
             plugin.getConfig().set("prism-integration",  false);
         }
         
+        if (!contains("prism-action-string", true))
+        {
+        	plugin.getConfig().set("prism-action-string", "client version");
+        }
+        
         saveConfig();
     }
     
@@ -220,8 +230,9 @@ public class Config
             writer.write("enable-metrics: " + plugin.getConfig().getBoolean("enable-metrics") + "\n");
             writer.write("\n");
             
-            writer.write("# Record data via Prism, with the action vvs-client-connect" + "\n");
+            writer.write("# Record data via Prism, with the action vvs-connect" + "\n");
             writer.write("prism-integration: " + plugin.getConfig().getBoolean("prism-integration") + "\n");
+            writer.write("prism-action-string: \"" + plugin.getConfig().getString("prism-action-string") + "\"" + "\n");
 
             writer.close();
         }
